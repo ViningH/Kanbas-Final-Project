@@ -1,0 +1,69 @@
+.wd-kanbas-navigation {
+  background-color: black;
+  padding: 0px;
+  margin: 0px;
+  width: 80px;
+}
+
+.wd-kanbas-navigation li {
+  padding: 5px;
+  margin-bottom: 5px;
+  font-size: 0.8em;
+  text-align: center;
+}
+
+.wd-kanbas-navigation li.wd-active {
+  background-color: white;
+}
+
+.wd-kanbas-navigation li.wd-active a {
+  color: red;
+}
+
+.wd-kanbas-navigation li.wd-active a span.account-icons {
+  color: grey;
+}
+
+.wd-kanbas-navigation a {
+  color: white;
+  text-decoration: none;
+}
+
+.wd-kanbas-navigation a span.regular-icons {
+  color: red;
+  font-size: 2em !important;
+
+}
+
+.wd-kanbas-navigation a span.account-icons {
+  color: white;
+  font-size: 2em !important;
+
+}
+
+.wd-shift-content {
+  margin-left: 0px;
+}
+
+
+.wd-kanbas-navigation a.wd-n-text {
+  color: red;
+  font-size: 3.6em;
+}
+
+
+.wd-page-height {
+  height: 100% !important;
+}
+
+@media screen and (min-width: 1340px) {
+  .wd-giant-height {
+    height: 100% !important;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .wd-shift-content {
+    margin-left: 80px;
+  }
+}

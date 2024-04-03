@@ -1,0 +1,36 @@
+.wd-status-container {
+    display: flex;
+    flex-direction: row;
+    width: 220px;
+    padding: 2px;
+}
+
+.wd-course-status-info-container {
+    display: flex;
+    flex-direction: row;
+    width: 220px;
+    padding-inline: 2px;
+    padding-top: 10px;
+    border-bottom: solid 1px lightgrey;
+}
+
+.wd-flex-grow-1 {
+    flex-grow: 1;
+    background-color: gainsboro;
+    border-color: lightgray;
+    border-radius: 3px;
+    border: 2px;
+}
+
+.wd-flex-grow-2 {
+    flex-grow: 1;
+}
+
+.wd-green-button {
+    background-color: green;
+    color: white;
+}
+
+.wd-align-button-text {
+    text-align: left;
+}

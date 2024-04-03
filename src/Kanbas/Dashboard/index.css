@@ -1,0 +1,34 @@
+.wd-dashboard-button {
+    background-color: transparent;
+    color: grey;
+}
+
+.wd-course-add-box {
+    border: 2px solid gainsboro;
+    border-radius: 10px;
+    padding: 5px;
+    width: 300px;
+}
+
+.wd-red-dashboard-btn {
+    color:white;
+    background-color: red;
+}
+
+.wd-green-dashboard-btn {
+    color:white;
+    background-color: green;
+}
+
+.wd-btn-move-right {
+    text-align: right;
+}
+
+.wd-dashboard-btn-padding {
+    margin-inline: 2px;
+}
+
+.wd-add-item-padding {
+    margin-top: 3px;
+    margin-bottom: 3px;
+}

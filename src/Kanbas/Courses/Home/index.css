@@ -1,0 +1,4 @@
+.wd-flex-fill {
+ display: flex;
+ flex-direction: row !important; 
+}

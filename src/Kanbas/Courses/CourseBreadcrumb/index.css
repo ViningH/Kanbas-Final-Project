@@ -1,0 +1,13 @@
+.wd-dropdown-navigation {
+    list-style: none;
+  }
+
+  .wd-dropdown-navigation a {
+    color: red;
+    text-decoration: none;
+    padding: 5px;
+  }
+
+  .wd-account-navi-icon {
+    color:gray;
+  }

@@ -1,0 +1,90 @@
+.wd-breadcrumb {
+    --bs-breadcrumb-divider: '>';
+    padding-inline: 10px;
+    padding-top: 10px;
+    border-bottom: 1px solid lightgrey !important;
+    margin-bottom: 10px;
+    vertical-align: bottom;
+}
+
+.wd-breadcrumb a {
+    color: red;
+    text-decoration: none;
+}
+
+.wd-breadcrumb li {
+    padding-top: 10px;
+    ;
+}
+
+.wd-breadcrumb-button {
+    background-color: white;
+    border: none;
+    color: red;
+    padding-left: 5px;
+    padding-right: 20px;
+    font-size: 25px;
+}
+
+.wd-tiny-course-text {
+    font-size: x-small;
+    padding-left: 15px;
+}
+
+.wd-flex-fill {
+    width: 100%;
+    display: flex;
+}
+
+.wd-main-content {
+    width: 100%;
+}
+
+.wd-internal-content {
+    padding: 5px;
+    width: 100%
+}
+
+.wd-dropdown-navigation {
+    list-style: none;
+  }
+
+  .wd-dropdown-navigation a {
+    color: red;
+    text-decoration: none;
+    padding: 5px;
+  }
+
+@media screen and (max-width: 767px) {
+    .wd-breadcrumb {
+        background-color: black;
+        color: white;
+        width: 100%;
+        height: 55px;
+    }
+
+    .wd-breadcrumb-button {
+        background-color: black;
+        color: white;
+    }
+
+    .wd-breadcrumb a {
+        color: white;
+    }
+
+    .wd-breadcrumb .breadcrumb .breadcrumb-item  {
+        color: white;
+        --bs-breadcrumb-divider: "";
+        position: relative;
+        left: 20%;
+        top: -10px;
+    }
+
+    .wd-breadcrumb .breadcrumb .active {
+        color: white;
+        position: absolute;
+        top: 20px;
+        left: 32%;
+    }
+
+}

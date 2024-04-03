@@ -1,0 +1,5 @@
+.wd-kanbas-navi-height {
+    height: 100% !important;
+    position: fixed;
+    overflow-y: auto;
+}
