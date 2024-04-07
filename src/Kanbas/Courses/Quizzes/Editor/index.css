@@ -26,3 +26,7 @@
     text-align: left;
     padding-inline: 10px;
 }
+
+.quiz-input-style {
+    width: 60%;
+}
