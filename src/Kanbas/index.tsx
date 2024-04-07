@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import store from "./store";
 import { Provider } from "react-redux";
-const API_BASE = process.env.REACT_APP_API_BASE;
+const API_BASE = process.env.REACT_APP_API_BASE||"http://localhost:4000";
 function Kanbas() {
    const [courses, setCourses] = useState<any[]>([]);
    const COURSES_API = `${API_BASE}/api/courses`;
@@ -70,7 +70,6 @@ function Kanbas() {
                   } />
                   <Route path="Courses/:courseId/*" element={<Courses />} />
                </Routes>
-
             </div>
          </div>
       </Provider>
