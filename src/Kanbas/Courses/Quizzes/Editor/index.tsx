@@ -16,7 +16,7 @@ function QuizEditor() {
                 <hr />
                 <ul className="nav nav-tabs wd-settings-links">
                     <li className="nav-item">
-                        <Link to={"#"} className="nav-link active">Details</Link>
+                        <Link to={"/Quizzes/Details"} className="nav-link active">Details</Link>
                     </li>
                     <li className="nav-item">
                         <Link to={"#"} className="nav-link">Questions</Link>
