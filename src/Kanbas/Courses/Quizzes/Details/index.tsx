@@ -41,7 +41,6 @@ function QuizDetails() {
         <div className="quiz-detail"><strong>For:</strong> Everyone</div>
         <div className="quiz-detail"><strong>Available from:</strong> {quizInfo.availableFrom}</div>
         <div className="quiz-detail"><strong>Until:</strong> {quizInfo.until}</div>
-        {/* Controls could be conditionally rendered if the user has the right permissions */}
         <div className="quiz-controls">
           <button className="control-button green">Publish</button>
           <button className="control-button">Preview</button>
