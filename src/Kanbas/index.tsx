@@ -70,7 +70,6 @@ function Kanbas() {
                   } />
                   <Route path="Courses/:courseId/*" element={<Courses />} />
                </Routes>
-
             </div>
          </div>
       </Provider>
