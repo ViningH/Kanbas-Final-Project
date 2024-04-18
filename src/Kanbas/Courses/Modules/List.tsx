@@ -16,7 +16,7 @@ function ModuleList() {
   const { courseId } = useParams();
   const modulesList = useSelector((state: KanbasState) =>
     state.modulesReducer.modules);
-  const module = useSelector((state: KanbasState) =>
+  let module = useSelector((state: KanbasState) =>
     state.modulesReducer.module);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -26,6 +26,9 @@ function ModuleList() {
       );
   }, [courseId]);
   const handleAddModule = () => {
+    module = {...module, id: Date.now()};
+    console.log(module.id);
+    console.log(module._id);
     client.createModule(courseId, module).then((module) => {
       dispatch(addModule(module));
     });
@@ -68,7 +71,7 @@ function ModuleList() {
         <div className="wd-align-right">
           <button className="wd-add-button"
             onClick={handleAddModule}>Add</button>
-          <button className="wd-edit-button" onClick={handleUpdateModule}>
+          <button className="wd-edit-button" onClick={() => handleUpdateModule()}>
             Update
           </button>
         </div>
@@ -96,7 +99,7 @@ function ModuleList() {
                   <FaEllipsisV className="ms-2" />
                 </span>
               </div>
-              {selectedModule && selectedModule?._id === module._id && (
+              {selectedModule && selectedModule?.id === module.id && (
                 <ul className="list-group">
                   {module.lessons?.map((lesson: any) => (
 

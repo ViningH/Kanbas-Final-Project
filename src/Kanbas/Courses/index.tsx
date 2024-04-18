@@ -17,8 +17,8 @@ import Quizzes from "./Quizzes";
 import QuizEditor from "./Quizzes/Editor";
 import QuizDetails from "./Quizzes/Details";
 function Courses() {
+    const API_BASE = process.env.REACT_APP_BASE_API_URL;
     const { courseId } = useParams();
-    const API_BASE = process.env.REACT_APP_API_BASE;
     const COURSES_API = `${API_BASE}/api/courses`;
     const [course, setCourse] = useState<any>({ _id: "" });
     const findCourseById = async (courseId?: string) => {

@@ -39,17 +39,17 @@ function Dashboard({ courses, course, setCourse, addNewCourse,
       <div className="row">
         <div className="row row-cols-1 row-cols-md-5 g-4">
           {courses.map((course) => (
-            <div key={course._id} className="col" style={{ width: 300 }}>
+            <div key={course.id} className="col" style={{ width: 300 }}>
               <div className="card">
                 <img src={`/images/${course.image}`} className="card-img-top"
                   style={{ height: 150 }} />
                 <div className="card-body">
-                  <Link className="card-title" to={`/Kanbas/Courses/${course._id}/Home`}
+                  <Link className="card-title" to={`/Kanbas/Courses/${course.id}/Home`}
                     style={{ textDecoration: "none", color: "dodgerblue", fontWeight: "bold" }}>
                     {course.number} {course.name} </Link>
-                  <p className="card-text">{course.number}.{course._id} {course.name}</p>
+                  <p className="card-text">{course.number}.{course.id} {course.name}</p>
                   <div>
-                    <Link to={`/Kanbas/Courses/${course._id}/Home`} className="btn wd-dashboard-button">
+                    <Link to={`/Kanbas/Courses/${course.id}/Home`} className="btn wd-dashboard-button">
                       <TbFilePencil style={{ fontSize: 25 }} /></Link>
                     <span className="wd-btn-move-right">
 
@@ -64,7 +64,7 @@ function Dashboard({ courses, course, setCourse, addNewCourse,
                       <button className="btn wd-red-dashboard-btn wd-dashboard-btn-padding"
                         onClick={(event) => {
                           event.preventDefault();
-                          deleteCourse(course._id);
+                          deleteCourse(course.id);
                         }}>
                         Delete
                       </button>

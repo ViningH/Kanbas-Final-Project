@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   modules:  <any>[],
-  module: { name: "New Module 123", description: "New Description" },
+  module: { name: "New Module 123", description: "New Description"},
 };
 
 
@@ -18,8 +18,7 @@ const modulesSlice = createSlice({
       state.modules = [action.payload, ...state.modules];
     },
     deleteModule: (state, action) => {
-      state.modules = state.modules.filter(
-        (module: { _id: any; }) => module._id !== action.payload
+      state.modules = state.modules.filter((module: { _id: any; }) => module._id !== action.payload
       );
     },
     updateModule: (state, action) => {

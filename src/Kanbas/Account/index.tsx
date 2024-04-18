@@ -1,11 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "bootstrap/dist/js/bootstrap.bundle.min";
+import Signin from "../../Users/Signin";
 import { Navigate, Route, Routes } from "react-router-dom";
 import AccountBreadcrumb from "./AccountBreadcrumb/breadcrumb";
 import AccountNavigation from "./Navigation";
-import Profile from './Profile';
+import Profile from "../../Users/Profile";
 import "./index.css";
 import ProfileEdit from './Profile/Edit';
+import UserTable from "../../Users/Table";
+import Signup from '../../Users/Signup';
 function Account() {
     return (
         <div className="wd-main-content">
@@ -16,7 +19,9 @@ function Account() {
                 </div>
                 <div className="wd-internal-content" >
                     <Routes>
-                        <Route path="/" element={<Navigate to="Profile" />} />
+                        <Route path="/" element={<Navigate to="Signin" />} />
+                        <Route path="/Signin" element={<Signin />} />
+                        <Route path="/Signup" element={<Signup />} />
                         <Route path="/Profile" element={<Profile />} />
                         <Route path="/Profile/Edit" element={<ProfileEdit />} />
                         <Route path="Notifications" element={<h1>Notifications</h1>} />
@@ -27,6 +32,7 @@ function Account() {
                         <Route path="TheHub" element={<h1>TheHub</h1>} />
                         <Route path="Qwickly" element={<h1>Qwickly</h1>} />
                         <Route path="Announcements" element={<h1>Announcements</h1>} />
+                        <Route path="/Admin/Users" element={<UserTable />} />
                     </Routes>
                 </div>
             </div>
