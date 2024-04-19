@@ -3,8 +3,20 @@ import "./index.css";
 import { FaEllipsisV, FaCheckCircle, FaPlusCircle, FaExternalLinkAlt, FaLink, FaRocket, FaCaretDown } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams, Link } from "react-router-dom";
-
+import { KanbasState } from "../../store";
+import * as client from "./client";
+import { setQuiz, setQuizzes } from "./reducer";
 function QuizList(){
+    const {courseId} = useParams();
+    const quiz = useSelector((state: KanbasState) => state.quizzesReducer.quiz);
+    const quizList = useSelector((state: KanbasState) => state.quizzesReducer.quizzes);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        client.findQuizzesForCourse(courseId)
+          .then((quizzes) =>
+            dispatch(setQuizzes(quizzes))
+        );
+      }, [courseId]);
 
     return(
         <>
@@ -38,6 +50,13 @@ function QuizList(){
                         {/* ))} */}
                 </ul>
                 </li>
+      </ul>
+
+      Link for Quiz:
+      <ul>
+        {quizList.filter((quiz)=>quiz.course === courseId).map((quiz) =>(
+            <li><Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz._id}`} onClick={()=>dispatch(setQuiz(quiz))}>{quiz.title}</Link></li>
+        ))}
       </ul>
 
         </>
