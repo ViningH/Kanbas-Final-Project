@@ -2,6 +2,13 @@ import axios from "axios";
 const API_BASE = process.env.REACT_APP_BASE_API_URL;
 const COURSES_API = `${API_BASE}/api/courses`;
 const QUIZZES_API = `${API_BASE}/api/quizzes`;
+
+export const findQuizById = async (quizId: string) => {
+  const response = await axios.get(`${QUIZZES_API}/${quizId}`);
+  return response.data;
+};
+
+
 export const updateQuiz = async (quiz: { _id: any; }) => {
     const response = await axios.
       put(`${QUIZZES_API }/${quiz._id}`, quiz);

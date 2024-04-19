@@ -1,53 +1,89 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { findQuizById } from '../client'; // Ensure this path is correct
+import { useParams } from 'react-router';
 import './index.css';
 
-function QuizDetails() {
-    const quizInfo = {
-        title: 'Q1 - HTML',
-        quizType: 'Graded Quiz',
-        points: 29,
-        assignmentGroup: 'QUIZZES',
-        shuffleAnswers: 'No',
-        timeLimit: '30 Minutes',
-        multipleAttempts: 'No',
-        viewResponses: 'Always',
-        showCorrectAnswers: 'Immediately',
-        oneQuestionAtATime: 'Yes',
-        requireRespondusLockDown: 'No',
-        requiredToViewQuizResults: 'No',
-        webcamRequired: 'No',
-        lockQuestionsAfterAnswering: 'No',
-        due: 'Sep 21 at 1pm',
-        availableFrom: 'Sep 21 at 11:40am',
-        until: 'Sep 21 at 1pm'
-      };
-    return (
-        <div className="quiz-details-container">
-        <h1 className="quiz-title">{quizInfo.title}</h1>
-        <div className="quiz-detail"><strong>Quiz Type:</strong> {quizInfo.quizType}</div>
-        <div className="quiz-detail"><strong>Points:</strong> {quizInfo.points}</div>
-        <div className="quiz-detail"><strong>Assignment Group:</strong> {quizInfo.assignmentGroup}</div>
-        <div className="quiz-detail"><strong>Shuffle Answers:</strong> {quizInfo.shuffleAnswers}</div>
-        <div className="quiz-detail"><strong>Time Limit:</strong> {quizInfo.timeLimit}</div>
-        <div className="quiz-detail"><strong>Multiple Attempts:</strong> {quizInfo.multipleAttempts}</div>
-        <div className="quiz-detail"><strong>View Responses:</strong> {quizInfo.viewResponses}</div>
-        <div className="quiz-detail"><strong>Show Correct Answers:</strong> {quizInfo.showCorrectAnswers}</div>
-        <div className="quiz-detail"><strong>One Question at a Time:</strong> {quizInfo.oneQuestionAtATime}</div>
-        <div className="quiz-detail"><strong>Require Respondus LockDown:</strong> {quizInfo.requireRespondusLockDown}</div>
-        <div className="quiz-detail"><strong>Required to View Quiz Results:</strong> {quizInfo.requiredToViewQuizResults}</div>
-        <div className="quiz-detail"><strong>Webcam Required:</strong> {quizInfo.webcamRequired}</div>
-        <div className="quiz-detail"><strong>Lock Questions After Answering:</strong> {quizInfo.lockQuestionsAfterAnswering}</div>
-        <div className="quiz-detail"><strong>Due:</strong> {quizInfo.due}</div>
-        <div className="quiz-detail"><strong>For:</strong> Everyone</div>
-        <div className="quiz-detail"><strong>Available from:</strong> {quizInfo.availableFrom}</div>
-        <div className="quiz-detail"><strong>Until:</strong> {quizInfo.until}</div>
-        <div className="quiz-controls">
-          <button className="control-button green">Publish</button>
-          <button className="control-button">Preview</button>
-          <button className="control-button">Edit</button>
-        </div>
-      </div>
-      );
-
+interface Quiz {
+    _id: string;
+    title: string;
+    points: number;
+    quiztype: string;
+    group: string;
+    shuffle: boolean;
+    time: number;
+    multiple_attempts: boolean;
+    show_correct: boolean;
+    show_correct_date: string;
+    code: string;
+    one_question: boolean;
+    webcam: boolean;
+    lock: boolean;
+    due_date: string;
+    start_date: string;
+    until_date: string;
 }
+
+
+const QuizDetails: React.FC = () => {
+  const { quizId } = useParams<{ quizId?: string }>();  
+  const [quizInfo, setQuizInfo] = useState<Quiz | null>(null);
+
+  useEffect(() => {
+      if (!quizId) {
+          console.log("Quiz ID is not available");
+          return;
+      }
+
+      const fetchQuizDetails = async () => {
+          try {
+              const data = await findQuizById(quizId);
+              setQuizInfo(data);
+          } catch (error) {
+              console.error('Failed to fetch quiz details:', error);
+          }
+      };
+
+      fetchQuizDetails();
+  }, [quizId]);
+
+  if (!quizInfo) {
+      return <div>Loading...</div>;
+  }
+
+  return (
+      <div className="quiz-details-container">
+          <h1 className="quiz-title">{quizInfo.title}</h1>
+          <div className="quiz-detail"><strong>Quiz Type:</strong> {quizInfo.quiztype}</div>
+          <div className="quiz-detail"><strong>Points:</strong> {quizInfo.points}</div>
+          <div className="quiz-detail"><strong>Assignment Group:</strong> {quizInfo.group}</div>
+          <div className="quiz-detail"><strong>Shuffle Answers:</strong> {quizInfo.shuffle ? 'Yes' : 'No'}</div>
+          <div className="quiz-detail"><strong>Time Limit:</strong> {quizInfo.time} Minutes</div> 
+          <div className="quiz-detail"><strong>Multiple Attempts:</strong> {quizInfo.multiple_attempts}</div>
+          <div className="quiz-detail"><strong>Show Correct Answers:</strong> {quizInfo.show_correct}</div>
+          <div className="quiz-detail"><strong>Access Code:</strong> {quizInfo.code}</div>
+          <div className="quiz-detail"><strong>One Question at a Time:</strong> {quizInfo.one_question ? 'Yes' : 'No'}</div>
+          <div className="quiz-detail"><strong>Webcam Required:</strong> {quizInfo.webcam ? 'No' : 'Yes'}</div>
+          <div className="quiz-detail"><strong>Lock Questions After Answering:</strong> {quizInfo.lock ? 'No' : 'Yes'}</div>
+          <div className="quiz-detail"><strong>Due Date</strong> {quizInfo.due_date}</div>
+          <div className="quiz-detail"><strong>Available Date:</strong> {quizInfo.start_date}</div>
+          <div className="quiz-detail"><strong>Until Date:</strong> {quizInfo.until_date}</div>
+
+
+
+
+
+
+
+
+
+
+          <div className="quiz-controls">
+              <button className="control-button green">Publish</button>
+              <button className="control-button">Preview</button>
+              <button className="control-button">Edit</button>
+          </div>
+      </div>
+  );
+}
+
 export default QuizDetails;
