@@ -7,6 +7,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import { addQuiz, updateQuiz, setQuiz, setQuizzes } from "../reducer";
 import * as client from "../client";
 import { KanbasState } from "../../../store";
+import { setAssignment } from "../../Assignments/reducer";
 function QuizEditor() {
     const { courseId } = useParams();
     const quiz = useSelector((state: KanbasState) => state.quizzesReducer.quiz);
@@ -22,7 +23,17 @@ function QuizEditor() {
             client.updateQuiz(quiz).then(() => { dispatch(updateQuiz(quiz)) });
         } else {
             client.addQuiz(courseId, quiz).then((quiz) => { dispatch(addQuiz(quiz)) });
-        }
+        };
+        navigate(`/Kanbas/Courses/${courseId}/Quizzes`);
+    };
+    const handleSaveAndPublish = async () => {
+        const status = await dispatch(setQuiz({...quiz, published: true}));
+        if (quizList.filter(q => q._id === quiz._id).length > 0) {
+            client.updateQuiz(quiz).then(() => { dispatch(updateQuiz(quiz)) });
+        } else {
+            client.addQuiz(courseId, quiz).then((quiz) => { dispatch(addQuiz(quiz)) });
+        };
+        navigate(`/Kanbas/Courses/${courseId}/Quizzes`);
     };
     return (
         <>
@@ -45,7 +56,8 @@ function QuizEditor() {
                     </li>
                 </ul>
                 < br />
-                <input className="form-control quiz-input-style" value={quiz?.title} />
+                <input className="form-control quiz-input-style" value={quiz?.title}
+                    onChange={(e) => dispatch(setQuiz({ ...quiz, title: e.target.value }))} />
                 < br />
                 Quiz Instructions:
                 <br />
@@ -55,7 +67,8 @@ function QuizEditor() {
                 <div className="mb-3 row">
                     <label htmlFor="quiz-type-input" className="col-3 col-form-label wd-align-text-right">Quiz Type </label>
                     <div className="col-5">
-                        <select className="form-control" id="quiz-type-input" name="QUIZTYPE">
+                        <select className="form-control" id="quiz-type-input" name="QUIZTYPE"
+                            onChange={(e) => dispatch(setQuiz({ ...quiz, quiztype: e.target.value }))} >
                             <option value="GRADEDQUIZ">
                                 Graded Quiz
                             </option>
@@ -74,13 +87,15 @@ function QuizEditor() {
                 <div className="mb-3 row">
                     <label htmlFor="points-input" className="col-3 col-form-label wd-align-text-right">Points </label>
                     <div className="col-5">
-                        <input className="form-control" value={quiz?.points} id="points-input" />
+                        <input className="form-control" value={quiz?.points} id="points-input"
+                            onChange={(e) => dispatch(setQuiz({ ...quiz, points: e.target.value }))} />
                     </div>
                 </div>
                 <div className="mb-3 row">
                     <label htmlFor="assignment-group-input" className="col-3 col-form-label wd-align-text-right">Assignment Group </label>
                     <div className="col-5">
-                        <select className="form-control" id="assignment-group-input" name="ASSIGNMENTGROUP">
+                        <select className="form-control" id="assignment-group-input" name="ASSIGNMENTGROUP"
+                            onChange={(e) => dispatch(setQuiz({ ...quiz, group: e.target.value }))} >
                             <option value="QUIZZES">
                                 Quizzes
                             </option>
@@ -109,7 +124,8 @@ function QuizEditor() {
                         &emsp;
                     </div>
                     <div className="col-7 wd-align-text-left">
-                        <input type="checkbox" value="SHUFFLE" name="shuffle" id="shuffle" checked={quiz?.shuffle} />
+                        <input type="checkbox" value="SHUFFLE" name="shuffle" id="shuffle" checked={quiz?.shuffle}
+                            onClick={(e) => dispatch(setQuiz({ ...quiz, shuffle: !quiz?.shuffle }))} />
                         <label htmlFor="shuffle">&nbsp; Shuffle Answers</label>
                     </div>
                 </div>
@@ -118,13 +134,15 @@ function QuizEditor() {
                         &emsp;
                     </div>
                     <div className="col-2 wd-align-text-left">
-                        <input type="checkbox" value="TIMELIMIT" name="time-limit" id="time-limit" checked={quiz?.time_limit} />
+                        <input type="checkbox" value="TIMELIMIT" name="time-limit" id="time-limit" checked={quiz?.time_limit}
+                            onClick={(e) => dispatch(setQuiz({ ...quiz, time_limit: !quiz?.time_limit }))} />
                         <label htmlFor="shuffle">&nbsp; Time Limit</label>
                     </div>
                     {quiz?.time_limit ?
                         <>
                             <div className="col-1">
-                                <input id="time-amount" className="form-control" value={quiz?.time} />
+                                <input id="time-amount" className="form-control" value={quiz?.time}
+                                    onChange={(e) => dispatch(setQuiz({ ...quiz, time: e.target.value }))} />
                             </div>
                             <div className="col-3">
                                 <label htmlFor="time-amount">&nbsp; Minutes</label>
@@ -140,7 +158,9 @@ function QuizEditor() {
                         &emsp;
                     </div>
                     <div className="col-7 wd-align-text-left">
-                        <input type="checkbox" value="MULTIPLEATTEMPTS" name="multiattempts" id="multiattempts" checked={quiz?.multiple_attempts} />
+                        <input type="checkbox" value="MULTIPLEATTEMPTS" name="multiattempts" id="multiattempts"
+                         checked={quiz?.multiple_attempts}
+                         onClick={(e) => dispatch(setQuiz({ ...quiz, multiple_attempts: !quiz?.multiple_attempts }))} />
                         <label htmlFor="multiattempts">&nbsp; Multiple Attempts</label>
                     </div>
                 </div>
@@ -150,7 +170,9 @@ function QuizEditor() {
                         &emsp;
                     </div>
                     <div className="col-3 wd-align-text-left">
-                        <input type="checkbox" value="SHOWCORRECT" name="show-correct" id="show-correct" checked={quiz?.show_correct} />
+                        <input type="checkbox" value="SHOWCORRECT" name="show-correct" id="show-correct" 
+                        checked={quiz?.show_correct} 
+                        onClick={(e) => dispatch(setQuiz({ ...quiz, show_correct: !quiz?.show_correct }))}/>
                         <label htmlFor="show-correct">&nbsp; Show Correct Answers</label>
                     </div>
                     {quiz?.show_correct ?
@@ -160,7 +182,10 @@ function QuizEditor() {
                             </div>
                             <div className="col-2">
 
-                                <input type="date" id="show-correct-date" className="form-control" value={quiz?.show_correct_date} />
+                                <input type="date" id="show-correct-date" className="form-control" 
+                                value={quiz?.show_correct_date} 
+                                onChange={(e) => dispatch(setQuiz({ ...quiz, show_correct_date: e.target.value}))}
+                                />
                             </div>
                         </>
                         :
@@ -171,7 +196,8 @@ function QuizEditor() {
                 <div className="mb-3 row">
                     <label htmlFor="code" className="col-3 col-form-label wd-align-text-right">Access Code </label>
                     <div className="col-5">
-                        <input className="form-control" value={quiz?.code} id="code" />
+                        <input className="form-control" value={quiz?.code} id="code"
+                        onChange={(e) => dispatch(setQuiz({ ...quiz, code: e.target.value}))} />
                     </div>
                 </div>
 
@@ -180,7 +206,9 @@ function QuizEditor() {
                         &emsp;
                     </div>
                     <div className="col-7 wd-align-text-left">
-                        <input type="checkbox" value="ONEQ" name="onequestion" id="onequestion" checked={quiz?.one_question} />
+                        <input type="checkbox" value="ONEQ" name="onequestion" id="onequestion" 
+                        checked={quiz?.one_question} 
+                        onClick={(e) => dispatch(setQuiz({ ...quiz, one_question: !quiz?.one_question }))}/>
                         <label htmlFor="onequestion">&nbsp; One Question at a Time</label>
                     </div>
                 </div>
@@ -190,7 +218,9 @@ function QuizEditor() {
                         &emsp;
                     </div>
                     <div className="col-7 wd-align-text-left">
-                        <input type="checkbox" value="WEBCAM" name="webcam" id="webcam" checked={quiz?.webcam} />
+                        <input type="checkbox" value="WEBCAM" name="webcam" id="webcam" 
+                        checked={quiz?.webcam} 
+                        onClick={(e) => dispatch(setQuiz({ ...quiz, webcam: !quiz?.webcam }))}/>
                         <label htmlFor="webcam">&nbsp; Webcam Required</label>
                     </div>
                 </div>
@@ -200,7 +230,8 @@ function QuizEditor() {
                         &emsp;
                     </div>
                     <div className="col-7 wd-align-text-left">
-                        <input type="checkbox" value="LOCK" name="lock" id="lock" checked={quiz?.lock} />
+                        <input type="checkbox" value="LOCK" name="lock" id="lock" checked={quiz?.lock} 
+                        onClick={(e) => dispatch(setQuiz({ ...quiz, lock: !quiz?.lock }))}/>
                         <label htmlFor="lock">&nbsp; Lock Questions After Answering</label>
                     </div>
                 </div>
@@ -220,7 +251,8 @@ function QuizEditor() {
                             <label htmlFor="duedate"><strong>Due</strong></label>
                         </div>
                         <div className="col-11 wd-inside-form-card">
-                            <input id="duedate" className="form-control" type="date" value={quiz?.due_date} />
+                            <input id="duedate" className="form-control" type="date" value={quiz?.due_date}
+                            onChange={(e) => dispatch(setQuiz({ ...quiz, due_date: e.target.value }))} />
                         </div>
                         <div className="col-11 wd-inside-form-card">
                             <div className="row">
@@ -237,11 +269,13 @@ function QuizEditor() {
                                 <div className="col-6">
                                     <input className="form-control" type="date" id="available-from"
                                         value={quiz?.start_date}
+                                        onChange={(e) => dispatch(setQuiz({ ...quiz, start_date: e.target.value }))}
                                     />
                                 </div>
                                 <div className="col-6">
                                     <input className="form-control" type="date" id="until"
                                         value={quiz?.until_date}
+                                        onChange={(e) => dispatch(setQuiz({ ...quiz, until_date: e.target.value }))}
                                     />
                                 </div>
                             </div>
@@ -257,9 +291,9 @@ function QuizEditor() {
                     <input type="checkbox" value="NOTIFYUSERS" name="notify-users" id="notify-users" />
                     <label htmlFor="notify-users">&nbsp; Notify users that this content has changed</label>
                     <span>
-                        <Link to="#"><button className="wd-standard-button">Cancel</button></Link>
-                        <Link to="#"><button className="wd-standard-button">Save & Publish</button></Link>
-                        <Link to="#"><button className="wd-red-button">Save</button></Link>
+                        <Link to={`/Kanbas/Courses/${courseId}/Quizzes`}><button className="wd-standard-button">Cancel</button></Link>
+                        <Link to={`/Kanbas/Courses/${courseId}/Quizzes`}><button className="wd-standard-button" onClick={handleSaveAndPublish}>Save & Publish</button></Link>
+                        <Link to={`/Kanbas/Courses/${courseId}/Quizzes`}><button className="wd-red-button" onClick={handleSave}>Save</button></Link>
                     </span>
                 </p>
                 <hr />
