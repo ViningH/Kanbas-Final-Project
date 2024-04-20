@@ -16,6 +16,7 @@ import axios from "axios";
 import Quizzes from "./Quizzes";
 import QuizEditor from "./Quizzes/Editor";
 import QuizDetails from "./Quizzes/Details";
+import Questions from "./Quizzes/Questions";
 function Courses() {
     const API_BASE = process.env.REACT_APP_BASE_API_URL;
     const { courseId } = useParams();
@@ -50,6 +51,7 @@ function Courses() {
                         <Route path="Quizzes/:quizId/Details" element={<QuizDetails />} />
                         <Route path="Quizzes" element={<Quizzes />} />
                         <Route path="Quizzes/:quizId" element={<QuizEditor />} />
+                        <Route path="Quizzes/:quizId/Questions" element={<Questions />} />
                         <Route path="Grades" element={<Grades />} />
                         <Route path="People" element={<h1>People</h1>} />
                         <Route path="Settings" element={<CourseDetails />} />

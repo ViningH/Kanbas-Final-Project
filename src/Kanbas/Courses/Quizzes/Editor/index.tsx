@@ -7,7 +7,6 @@ import { Editor } from '@tinymce/tinymce-react';
 import { addQuiz, updateQuiz, setQuiz, setQuizzes } from "../reducer";
 import * as client from "../client";
 import { KanbasState } from "../../../store";
-import { setAssignment } from "../../Assignments/reducer";
 function QuizEditor() {
     const { courseId } = useParams();
     const quiz = useSelector((state: KanbasState) => state.quizzesReducer.quiz);
@@ -26,8 +25,7 @@ function QuizEditor() {
         };
         navigate(`/Kanbas/Courses/${courseId}/Quizzes`);
     };
-    const handleSaveAndPublish = async () => {
-        const status = await dispatch(setQuiz({ ...quiz, published: true }));
+    const handleSaveAndPublish = (quiz: { _id: any; }) => {
         if (quizList.filter(q => q._id === quiz._id).length > 0) {
             client.updateQuiz(quiz).then(() => { dispatch(updateQuiz(quiz)) });
         } else {
@@ -44,15 +42,15 @@ function QuizEditor() {
                         <strong className="text-success"> <FaCircleCheck /> Published &emsp;</strong> :
                         <strong>Unpublished</strong>
                     }
-                    <button className="wd-standard-button">⋮</button>
+                    <button className="wd-standard-button" onClick={(e) => dispatch(setQuiz({ ...quiz, published: !quiz?.published }))}>⋮</button>
                 </div>
                 <hr />
                 <ul className="nav nav-tabs wd-settings-links">
                     <li className="nav-item">
-                        <Link to={"/Quizzes/Details"} className="nav-link active">Details</Link>
+                        <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz._id}/Details`} className="nav-link active">Details</Link>
                     </li>
                     <li className="nav-item">
-                        <Link to={"#"} className="nav-link">Questions</Link>
+                        <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz._id}/Questions`} className="nav-link">Questions</Link>
                     </li>
                 </ul>
                 < br />
@@ -297,7 +295,7 @@ function QuizEditor() {
                     <label htmlFor="notify-users">&nbsp; Notify users that this content has changed</label>
                     <span>
                         <Link to={`/Kanbas/Courses/${courseId}/Quizzes`}><button className="wd-standard-button">Cancel</button></Link>
-                        <Link to={`/Kanbas/Courses/${courseId}/Quizzes`}><button className="wd-standard-button" onClick={handleSaveAndPublish}>Save & Publish</button></Link>
+                        <Link to={`/Kanbas/Courses/${courseId}/Quizzes`}><button className="wd-standard-button" onClick={() => handleSaveAndPublish({...quiz, published: true})}>Save & Publish</button></Link>
                         <Link to={`/Kanbas/Courses/${courseId}/Quizzes`}><button className="wd-red-button" onClick={handleSave}>Save</button></Link>
                     </span>
                 </p>
