@@ -30,3 +30,50 @@
 .quiz-input-style {
     width: 60%;
 }
+
+.quiz-inputs-sizing {
+    border-radius: 5px;
+    border: solid grey 1px;
+}
+
+.points-input {
+    width: 45px;
+}
+
+.question-edit-lists {
+    list-style: none;
+}
+
+.label-padding {
+    padding: 10px;
+}
+
+.select-formatting {
+    background-color: white;
+    height: 30px;
+}
+
+.quiz-input-width {
+    width: 25%;
+}
+
+.edit-input-width {
+    width: 35%;
+}
+
+.add-choice-button {
+    background-color: white;
+    color: red;
+    border:none;
+    height: 35px;
+    padding-left: 10px;
+    padding-right:10px;
+    margin-inline: 3px;
+    border-radius: 5px;
+    width: 200px;
+ }
+
+ .blank-label-space {
+    border: solid 1px grey;
+    padding-inline: 30px;
+ }

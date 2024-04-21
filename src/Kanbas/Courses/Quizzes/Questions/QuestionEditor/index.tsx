@@ -66,9 +66,9 @@ function QuestionEditor() {
     return (
         <>
             <p className="wd-inline-align">
-                <label>Question Title:&ensp;</label>
-                <input value={question?.title} onChange={(e) => dispatch(setQuestion({ ...question, title: e.target.value }))}></input>
-                &ensp;<select id="question-type-input" name="QUESTIONTYPE" value={question?.questiontype}
+                <label htmlFor="qtitle">Question Title:&ensp;</label>
+                <input id="qtitle" className="quiz-inputs-sizing quiz-input-width" value={question?.title} onChange={(e) => dispatch(setQuestion({ ...question, title: e.target.value }))}></input>
+                &ensp;<select className="select-formatting quiz-inputs-sizing quiz-input-width" id="question-type-input" name="QUESTIONTYPE" value={question?.questiontype}
                     onChange={(e) => dispatch(setQuestion({ ...question, questiontype: e.target.value }))} >
                     <option value="MULTIPLECHOICE">
                         Multiple Choice Question
@@ -81,10 +81,11 @@ function QuestionEditor() {
                     </option>
                 </select>
                 <span>
-                    pts: <input value={question.points} onChange={(e) => dispatch(setQuestion({ ...question, points: e.target.value }))} />
+                    pts: <input type="number" className="quiz-inputs-sizing points-input" value={question.points} onChange={(e) => dispatch(setQuestion({ ...question, points: e.target.value }))} />
                 </span>
             </p>
             <hr />
+
             {question?.questiontype === "MULTIPLECHOICE" ?
                 <>
                     Enter your question and multiple answers, then select the one correct answer.
@@ -104,6 +105,8 @@ function QuestionEditor() {
                 </>
                 :
                 <></>}
+            <br />
+            <br />
             <h4>Question:</h4>
             <Editor apiKey='u1u1m6dbp6lhdqlz8nc5bfub9phithmuzavtcs2b6cbusqj7'
                 onEditorChange={(newValue, editor) => {
@@ -117,34 +120,48 @@ function QuestionEditor() {
                 <>
                     <input type="checkbox" id="trueanswer" checked={question?.tf_answer}
                         onClick={(e) => dispatch(setQuestion({ ...question, tf_answer: true }))}></input>
-                    <label htmlFor="trueanswer">True</label><br />
+                    <label htmlFor="trueanswer">&nbsp; True</label><br />
                     <input type="checkbox" id="falseanswer" checked={!question?.tf_answer}
                         onClick={(e) => dispatch(setQuestion({ ...question, tf_answer: false }))}></input>
-                    <label htmlFor="falseanswer">False</label><br />
+                    <label htmlFor="falseanswer">&nbsp; False</label><br />
                     <br />
                 </>
                 :
                 <></>}
             {question?.questiontype === "MULTIPLECHOICE" ?
                 <>
-                    <ul>
+                    <ul className="question-edit-lists">
                         {question?.choices?.map((choice: any) => (
                             <li>
-                                {choice.choice_text}
-                                <button onClick={() => setEditedChoice(choice)}>Edit</button>
-                                <button onClick={() => handleDeleteChoice(choice.choice_no)}>Delete</button>
-                                <input type="radio" name="correctanswer" checked={question?.multiple_answer === choice.choice_no}
-                                    onClick={(e) => dispatch(setQuestion({ ...question, multiple_answer: choice.choice_no }))} />
+                                <p className="wd-inline-align">
+                                    {question?.multiple_answer === choice.choice_no ?
+                                        <strong className="text-success label-padding">Correct Answer&nbsp;&nbsp; </strong>
+                                        : <strong className="label-padding">Possible Answer&nbsp; </strong>}
+
+
+                                    <input type="radio" name="correctanswer" checked={question?.multiple_answer === choice.choice_no}
+                                        onClick={(e) => dispatch(setQuestion({ ...question, multiple_answer: choice.choice_no }))} />
+                                    &emsp;
+                                    {choice.choice_text}
+                                    <span>
+                                        <button className="wd-standard-button" onClick={() => setEditedChoice(choice)}>Edit</button>
+                                        <button className="wd-red-button" onClick={() => handleDeleteChoice(choice.choice_no)}>Delete</button>
+                                    </span>
+                                </p>
                             </li>
                         ))}
                     </ul>
-                    <input value={editedChoice.choice_text}
-                        onChange={(e) => (setEditedChoice({ ...editedChoice, choice_text: e.target.value }))} />
-                    <button onClick={() => handleEditChoice(editedChoice)}>Update</button>
+                    <div className="wd-align-right">
+                        <input className="quiz-inputs-sizing edit-input-width" value={editedChoice.choice_text}
+                            onChange={(e) => (setEditedChoice({ ...editedChoice, choice_text: e.target.value }))} />
+                        <button className="add-choice-button" onClick={() => handleEditChoice(editedChoice)}>Update</button>
+                        <br />
+                        <input className="quiz-inputs-sizing edit-input-width" value={oneChoice}
+                            onChange={(e) => (setChoice(e.target.value))} />
+                        <button className="add-choice-button" onClick={() => handleAddChoice([...question.choices, { choice_no: (Date.now()), choice_text: oneChoice }])}>+ Add Another Answer</button>
+                    </div>
                     <br />
-                    <input value={oneChoice}
-                        onChange={(e) => (setChoice(e.target.value))} />
-                    <button onClick={() => handleAddChoice([...question.choices, { choice_no: (Date.now()), choice_text: oneChoice }])}>Add Choice</button>
+                    <br />
                     <br />
                 </>
                 :
@@ -152,19 +169,31 @@ function QuestionEditor() {
             }
             {question?.questiontype === "FILLINBLANKS" ?
                 <>
-                    <ul>
+                    <ul className="question-edit-lists">
                         {question?.blanks?.map((blank: any) => (
                             <li>
-                                Fill in Blanks Label:
-                                {blank.label}
-                                Correct Answer:
-                                {blank.answer}
-                                <button onClick={() => setEditedBlank(blank)}>Edit</button>
-                                <button onClick={() => handleDeleteBlank(blank.blank_no)}>Delete</button>
+                                <div className="d-flex">
+                                    <div>
+                                        <strong className="label-padding">Fill in Blanks Label:&nbsp; </strong>
+                                        {blank.label}
+                                        <br />
+                                        <strong className="label-padding">Correct Answer for Blank:</strong>
+                                        {blank.answer}
+                                    </div>
+                                    <div className="flex-fill"></div>
+                                    <div>
+                                        <span>
 
+                                            <button className="wd-standard-button" onClick={() => setEditedBlank(blank)}>Edit</button>
+                                            <button className="wd-red-button" onClick={() => handleDeleteBlank(blank.blank_no)}>Delete</button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <br />
                             </li>
                         ))}
                     </ul>
+                    <div className="wd-align-right">
                     Edit Label:
                     <input value={editedBlank.label}
                         onChange={(e) => (setEditedBlank({ ...editedBlank, label: e.target.value }))}
@@ -173,7 +202,7 @@ function QuestionEditor() {
                     <input value={editedBlank.answer}
                         onChange={(e) => (setEditedBlank({ ...editedBlank, answer: e.target.value }))}
                     />
-                    <button onClick={() => handleEditBlank(editedBlank)}>Update</button>
+                    <button className="add-choice-button" onClick={() => handleEditBlank(editedBlank)}>Update</button>
                     <br />
                     New Label:
                     <input value={newBlank.label}
@@ -183,7 +212,8 @@ function QuestionEditor() {
                     <input value={newBlank.answer}
                         onChange={(e) => (setNewBlank({ ...newBlank, answer: e.target.value }))}
                     />
-                    <button onClick={() => handleAddBlank([...question.blanks, { blank_no: (Date.now()), label: newBlank.label, answer: newBlank.answer }])}>Add Choice</button>
+                    <button className="add-choice-button" onClick={() => handleAddBlank([...question.blanks, { blank_no: (Date.now()), label: newBlank.label, answer: newBlank.answer }])}>+ Add Another Answer</button>
+                    </div>
                     <br />
                 </>
                 :
