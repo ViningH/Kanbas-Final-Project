@@ -10,6 +10,7 @@ function QuestionEditor() {
     const { courseId, quizId } = useParams();
     const question = useSelector((state: KanbasState) => state.questionsReducer.question);
     const questionList = useSelector((state: KanbasState) => state.questionsReducer.questions);
+    const [oneChoice, setChoice] = useState("New Choice" )
     const dispatch = useDispatch();
     useEffect(() => {
         client.findQuestionsForQuiz(quizId).then((questions) =>
@@ -19,6 +20,12 @@ function QuestionEditor() {
     const handleSave = () => {
         client.updateQuestion(question).then(() => { dispatch(updateQuestion(question)) });
         navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizId}/Questions`);
+    };
+    const handleAddChoice = (choices: any) => {
+        console.log(question.choices);
+        console.log(choices);
+        console.log(question);
+        dispatch(setQuestion({...question, choices: choices}));
     };
     return (
         <>
@@ -63,7 +70,7 @@ function QuestionEditor() {
                 }
                 }
                 value={question?.details} />
-                <br />
+            <br />
             <h4>Answers:</h4>
             {question?.questiontype === "TRUEFALSE" ?
                 <>
@@ -77,6 +84,20 @@ function QuestionEditor() {
                 </>
                 :
                 <></>}
+            {question?.questiontype === "MULTIPLECHOICE" ?
+                <>
+                    <ul>
+                        {question?.choices?.map((choice: any) => (
+                            <li>{choice.choice_text}</li>
+                        ))}
+                    </ul>
+                    <input value={oneChoice} 
+                    onChange={(e) => (setChoice(e.target.value))} />
+                    <button onClick={() => handleAddChoice([...question.choices, {choice_no: Date.now.toString(), choice_text: oneChoice}])}>Add Choice</button>
+                </>
+                :
+                <></>
+            }
             <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quizId}/Questions`}><button className="wd-standard-button">Cancel</button></Link>
             <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quizId}/Questions`}><button className="wd-red-button" onClick={handleSave}>Update Question</button></Link>
 
