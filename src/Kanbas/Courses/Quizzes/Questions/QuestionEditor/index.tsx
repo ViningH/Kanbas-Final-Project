@@ -10,7 +10,8 @@ function QuestionEditor() {
     const { courseId, quizId } = useParams();
     const question = useSelector((state: KanbasState) => state.questionsReducer.question);
     const questionList = useSelector((state: KanbasState) => state.questionsReducer.questions);
-    const [oneChoice, setChoice] = useState("New Choice" )
+    const [oneChoice, setChoice] = useState("New Choice");
+    const [editedChoice, setEditedChoice] = useState({ choice_no: "N/A", choice_text: "Edit Choice" });
     const dispatch = useDispatch();
     useEffect(() => {
         client.findQuestionsForQuiz(quizId).then((questions) =>
@@ -25,8 +26,24 @@ function QuestionEditor() {
         console.log(question.choices);
         console.log(choices);
         console.log(question);
-        dispatch(setQuestion({...question, choices: choices}));
+        dispatch(setQuestion({ ...question, choices: choices }));
     };
+    const handleDeleteChoice = (choice_no: any) => {
+        const newChoices = question.choices.filter((choices: { choice_no: any; }) => choices.choice_no != choice_no);
+        dispatch(setQuestion({ ...question, choices: newChoices }));
+    };
+    const handleEditChoice = (newChoice: any) => {
+        if (newChoice !== "N/A") {
+            const newChoices = question.choices.map((choice: { choice_no: any; }) => {
+                if (choice.choice_no === newChoice.choice_no) {
+                    return newChoice;
+                } else {
+                    return choice;
+                }
+            });
+            dispatch(setQuestion({ ...question, choices: newChoices }));
+        }
+    }
     return (
         <>
             <label>Question Title:&ensp;</label>
@@ -88,12 +105,23 @@ function QuestionEditor() {
                 <>
                     <ul>
                         {question?.choices?.map((choice: any) => (
-                            <li>{choice.choice_text}</li>
+                            <li>
+                                {choice.choice_text}
+                                <button onClick={()=>setEditedChoice(choice)}>Edit</button>
+                                <button onClick={() => handleDeleteChoice(choice.choice_no)}>Delete</button>
+                                <input type="radio" name="correctanswer" checked={question?.multiple_answer === choice.choice_no}
+                                    onClick={(e) => dispatch(setQuestion({ ...question, multiple_answer: choice.choice_no }))} />
+                            </li>
                         ))}
                     </ul>
-                    <input value={oneChoice} 
-                    onChange={(e) => (setChoice(e.target.value))} />
-                    <button onClick={() => handleAddChoice([...question.choices, {choice_no: Date.now.toString(), choice_text: oneChoice}])}>Add Choice</button>
+                    <input value={editedChoice.choice_text}
+                        onChange={(e) => (setEditedChoice({ ...editedChoice, choice_text: e.target.value }))} />
+                        <button onClick={()=>handleEditChoice(editedChoice)}>Update</button>
+                        <br />
+                    <input value={oneChoice}
+                        onChange={(e) => (setChoice(e.target.value))} />
+                    <button onClick={() => handleAddChoice([...question.choices, { choice_no: (Date.now()), choice_text: oneChoice }])}>Add Choice</button>
+                    <br />
                 </>
                 :
                 <></>
