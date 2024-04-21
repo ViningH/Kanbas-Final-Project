@@ -95,20 +95,6 @@ function QuizList() {
                     </ul>
                 </li>
             </ul>
-
-            Link for Quiz:
-            <ul>
-                {quizList.filter((quiz) => quiz.course === courseId).map((quiz) => (
-                    <li><Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz._id}/Details`} onClick={() => dispatch(setQuiz(quiz))}>{quiz.title}</Link>
-                        <br />
-                        <div>
-                            <button onClick={() => handleDelete(quiz._id)}>Delete</button>
-                        </div>
-                    </li>
-
-                ))}
-            </ul>
-
         </>
     )
 }
