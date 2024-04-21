@@ -1,0 +1,32 @@
+.wd-align-text-right {
+    text-align: right;
+}
+
+.wd-align-text-left {
+    text-align: left;
+}
+
+.wd-inside-form-card {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: left;
+    padding-inline: 10px;
+}
+
+.wd-inside-form-top {
+    padding-top: 15px;
+    padding-bottom: 5px;
+    text-align: left;
+    padding-inline: 10px;
+}
+
+.wd-inside-form-bottom {
+    padding-top: 5px;
+    padding-bottom: 15px;
+    text-align: left;
+    padding-inline: 10px;
+}
+
+.quiz-input-style {
+    width: 60%;
+}

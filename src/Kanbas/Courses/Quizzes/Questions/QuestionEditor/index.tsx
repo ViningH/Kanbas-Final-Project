@@ -6,6 +6,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import { updateQuestion, setQuestion, setQuestions } from "../reducer";
 import * as client from "../client";
 import { KanbasState } from "../../../../store";
+import "./index.css";
 function QuestionEditor() {
     const { courseId, quizId } = useParams();
     const question = useSelector((state: KanbasState) => state.questionsReducer.question);
@@ -44,40 +45,45 @@ function QuestionEditor() {
         }
     };
     const handleAddBlank = (blanks: any) => {
-        dispatch(setQuestion({...question, blanks: blanks}));
+        dispatch(setQuestion({ ...question, blanks: blanks }));
     };
     const handleDeleteBlank = (blank_no: any) => {
-        const newBlanks = question.blanks.filter((blanks: {blank_no: any;}) => blanks.blank_no !== blank_no);
-        dispatch(setQuestion({...question, blanks: newBlanks}));
+        const newBlanks = question.blanks.filter((blanks: { blank_no: any; }) => blanks.blank_no !== blank_no);
+        dispatch(setQuestion({ ...question, blanks: newBlanks }));
     };
     const handleEditBlank = (newBlank: any) => {
         if (newBlank.blank_no !== "N/A") {
-            const newBlanks = question.blanks.map((blank: {blank_no: any;}) => {
+            const newBlanks = question.blanks.map((blank: { blank_no: any; }) => {
                 if (blank.blank_no === newBlank.blank_no) {
                     return newBlank;
                 } else {
                     return blank;
                 }
             });
-            dispatch(setQuestion({...question, blanks: newBlanks}));
+            dispatch(setQuestion({ ...question, blanks: newBlanks }));
         }
     };
     return (
         <>
-            <label>Question Title:&ensp;</label>
-            <input value={question?.title} onChange={(e) => dispatch(setQuestion({ ...question, title: e.target.value }))}></input>
-            &ensp;<select id="question-type-input" name="QUESTIONTYPE" value={question?.questiontype}
-                onChange={(e) => dispatch(setQuestion({ ...question, questiontype: e.target.value }))} >
-                <option value="MULTIPLECHOICE">
-                    Multiple Choice Question
-                </option>
-                <option value="TRUEFALSE">
-                    True False Question
-                </option>
-                <option value="FILLINBLANKS">
-                    Fill In Blanks Question
-                </option>
-            </select>
+            <p className="wd-inline-align">
+                <label>Question Title:&ensp;</label>
+                <input value={question?.title} onChange={(e) => dispatch(setQuestion({ ...question, title: e.target.value }))}></input>
+                &ensp;<select id="question-type-input" name="QUESTIONTYPE" value={question?.questiontype}
+                    onChange={(e) => dispatch(setQuestion({ ...question, questiontype: e.target.value }))} >
+                    <option value="MULTIPLECHOICE">
+                        Multiple Choice Question
+                    </option>
+                    <option value="TRUEFALSE">
+                        True False Question
+                    </option>
+                    <option value="FILLINBLANKS">
+                        Fill In Blanks Question
+                    </option>
+                </select>
+                <span>
+                    pts: <input value={question.points} onChange={(e) => dispatch(setQuestion({ ...question, points: e.target.value }))} />
+                </span>
+            </p>
             <hr />
             {question?.questiontype === "MULTIPLECHOICE" ?
                 <>
@@ -161,21 +167,21 @@ function QuestionEditor() {
                     </ul>
                     Edit Label:
                     <input value={editedBlank.label}
-                    onChange={(e)=>(setEditedBlank({...editedBlank, label: e.target.value}))}
+                        onChange={(e) => (setEditedBlank({ ...editedBlank, label: e.target.value }))}
                     />
                     Edit Answer:
                     <input value={editedBlank.answer}
-                    onChange={(e)=>(setEditedBlank({...editedBlank, answer: e.target.value}))}
+                        onChange={(e) => (setEditedBlank({ ...editedBlank, answer: e.target.value }))}
                     />
                     <button onClick={() => handleEditBlank(editedBlank)}>Update</button>
                     <br />
                     New Label:
                     <input value={newBlank.label}
-                    onChange={(e)=>(setNewBlank({...newBlank, label: e.target.value}))}
+                        onChange={(e) => (setNewBlank({ ...newBlank, label: e.target.value }))}
                     />
                     New Answer:
                     <input value={newBlank.answer}
-                    onChange={(e)=>(setNewBlank({...newBlank, answer: e.target.value}))}
+                        onChange={(e) => (setNewBlank({ ...newBlank, answer: e.target.value }))}
                     />
                     <button onClick={() => handleAddBlank([...question.blanks, { blank_no: (Date.now()), label: newBlank.label, answer: newBlank.answer }])}>Add Choice</button>
                     <br />

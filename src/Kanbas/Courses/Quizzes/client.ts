@@ -3,7 +3,7 @@ const API_BASE = process.env.REACT_APP_BASE_API_URL;
 const COURSES_API = `${API_BASE}/api/courses`;
 const QUIZZES_API = `${API_BASE}/api/quizzes`;
 
-export const findQuizById = async (quizId: string) => {
+export const findQuizById = async (quizId: any) => {
   const response = await axios.get(`${QUIZZES_API}/${quizId}`);
   return response.data;
 };
