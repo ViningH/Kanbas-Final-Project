@@ -12,6 +12,8 @@ function QuestionEditor() {
     const questionList = useSelector((state: KanbasState) => state.questionsReducer.questions);
     const [oneChoice, setChoice] = useState("New Choice");
     const [editedChoice, setEditedChoice] = useState({ choice_no: "N/A", choice_text: "Edit Choice" });
+    const [newBlank, setNewBlank] = useState({ label: "New Label", answer: "New Answer" });
+    const [editedBlank, setEditedBlank] = useState({ blank_no: "N/A", label: "Edit Label", answer: "Edit Answer" });
     const dispatch = useDispatch();
     useEffect(() => {
         client.findQuestionsForQuiz(quizId).then((questions) =>
@@ -23,17 +25,14 @@ function QuestionEditor() {
         navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizId}/Questions`);
     };
     const handleAddChoice = (choices: any) => {
-        console.log(question.choices);
-        console.log(choices);
-        console.log(question);
         dispatch(setQuestion({ ...question, choices: choices }));
     };
     const handleDeleteChoice = (choice_no: any) => {
-        const newChoices = question.choices.filter((choices: { choice_no: any; }) => choices.choice_no != choice_no);
+        const newChoices = question.choices.filter((choices: { choice_no: any; }) => choices.choice_no !== choice_no);
         dispatch(setQuestion({ ...question, choices: newChoices }));
     };
     const handleEditChoice = (newChoice: any) => {
-        if (newChoice !== "N/A") {
+        if (newChoice.choice_no !== "N/A") {
             const newChoices = question.choices.map((choice: { choice_no: any; }) => {
                 if (choice.choice_no === newChoice.choice_no) {
                     return newChoice;
@@ -43,7 +42,26 @@ function QuestionEditor() {
             });
             dispatch(setQuestion({ ...question, choices: newChoices }));
         }
-    }
+    };
+    const handleAddBlank = (blanks: any) => {
+        dispatch(setQuestion({...question, blanks: blanks}));
+    };
+    const handleDeleteBlank = (blank_no: any) => {
+        const newBlanks = question.blanks.filter((blanks: {blank_no: any;}) => blanks.blank_no !== blank_no);
+        dispatch(setQuestion({...question, blanks: newBlanks}));
+    };
+    const handleEditBlank = (newBlank: any) => {
+        if (newBlank.blank_no !== "N/A") {
+            const newBlanks = question.blanks.map((blank: {blank_no: any;}) => {
+                if (blank.blank_no === newBlank.blank_no) {
+                    return newBlank;
+                } else {
+                    return blank;
+                }
+            });
+            dispatch(setQuestion({...question, blanks: newBlanks}));
+        }
+    };
     return (
         <>
             <label>Question Title:&ensp;</label>
@@ -107,7 +125,7 @@ function QuestionEditor() {
                         {question?.choices?.map((choice: any) => (
                             <li>
                                 {choice.choice_text}
-                                <button onClick={()=>setEditedChoice(choice)}>Edit</button>
+                                <button onClick={() => setEditedChoice(choice)}>Edit</button>
                                 <button onClick={() => handleDeleteChoice(choice.choice_no)}>Delete</button>
                                 <input type="radio" name="correctanswer" checked={question?.multiple_answer === choice.choice_no}
                                     onClick={(e) => dispatch(setQuestion({ ...question, multiple_answer: choice.choice_no }))} />
@@ -116,11 +134,50 @@ function QuestionEditor() {
                     </ul>
                     <input value={editedChoice.choice_text}
                         onChange={(e) => (setEditedChoice({ ...editedChoice, choice_text: e.target.value }))} />
-                        <button onClick={()=>handleEditChoice(editedChoice)}>Update</button>
-                        <br />
+                    <button onClick={() => handleEditChoice(editedChoice)}>Update</button>
+                    <br />
                     <input value={oneChoice}
                         onChange={(e) => (setChoice(e.target.value))} />
                     <button onClick={() => handleAddChoice([...question.choices, { choice_no: (Date.now()), choice_text: oneChoice }])}>Add Choice</button>
+                    <br />
+                </>
+                :
+                <></>
+            }
+            {question?.questiontype === "FILLINBLANKS" ?
+                <>
+                    <ul>
+                        {question?.blanks?.map((blank: any) => (
+                            <li>
+                                Fill in Blanks Label:
+                                {blank.label}
+                                Correct Answer:
+                                {blank.answer}
+                                <button onClick={() => setEditedBlank(blank)}>Edit</button>
+                                <button onClick={() => handleDeleteBlank(blank.blank_no)}>Delete</button>
+
+                            </li>
+                        ))}
+                    </ul>
+                    Edit Label:
+                    <input value={editedBlank.label}
+                    onChange={(e)=>(setEditedBlank({...editedBlank, label: e.target.value}))}
+                    />
+                    Edit Answer:
+                    <input value={editedBlank.answer}
+                    onChange={(e)=>(setEditedBlank({...editedBlank, answer: e.target.value}))}
+                    />
+                    <button onClick={() => handleEditBlank(editedBlank)}>Update</button>
+                    <br />
+                    New Label:
+                    <input value={newBlank.label}
+                    onChange={(e)=>(setNewBlank({...newBlank, label: e.target.value}))}
+                    />
+                    New Answer:
+                    <input value={newBlank.answer}
+                    onChange={(e)=>(setNewBlank({...newBlank, answer: e.target.value}))}
+                    />
+                    <button onClick={() => handleAddBlank([...question.blanks, { blank_no: (Date.now()), label: newBlank.label, answer: newBlank.answer }])}>Add Choice</button>
                     <br />
                 </>
                 :
