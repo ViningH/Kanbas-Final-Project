@@ -22,8 +22,15 @@ function QuizList() {
             client.deleteQuiz(quizId).then((status) => {
                 dispatch(deleteQuiz(quizId));
             });
-        };
+        }
     }
+
+    // const sortQuizByDate(quiz){
+    //     quizzes._id.sort(function(a, b){
+
+    //     })
+    // }
+
     return (
         <>
             <p className="wd-inline-align">
@@ -48,21 +55,43 @@ function QuizList() {
                         <FaCaretDown className="me-2" /><strong>Assignments Quizzes</strong>
                     </div>
                     <ul className="list-group">
+                        {quizList.filter((quiz) => quiz.course === courseId).map((quiz) => (
                         <li className="list-group-item">
+
                             <div className="d-flex">
                                 <div className="wd-assignment-item-padding">
                                     <FaRocket className="wd-green-pencil" />
                                 </div>
                                 <div className="flex-fill wd-quiz-text-padding">
-                                    <h4><Link to={"#"} className="nav-link">Q1 - HTML</Link></h4>
-                                    <span><strong>Closed</strong></span> | <strong>Due</strong> Sep 21 at 1 pm |
-                                    29 pts | 11 Questions
+                                    
+                                    <h4><Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz._id}/Details`} className="nav-link">{quiz.title}</Link></h4>
+                                    <span><strong>Closed</strong></span> | <strong>Due</strong> {quiz.due_date} at 11:59 pm |
+                                    {quiz.points} pts | 11 Questions <br />
+                                    <div>
+                                        <button onClick={() => handleDelete(quiz._id)}>Delete</button>
+                                    </div>
+
                                 </div>
                                 <div className="wd-assignment-item-padding">
-                                    <FaCheckCircle className="text-success" /><FaEllipsisV className="ms-2" /></div>
+                                    <FaCheckCircle className="text-success" /><FaEllipsisV className="ms-2" />
+
+
+                                    {/* working on toggle button here */}
+                                    {/* <a className="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                    <FaEllipsisV className="ms-2" /></a>
+
+                                    <div className="collapse" id="collapseExample">
+                                        <div className="card card-body">
+                                            <button className="btn btn-primary">Edit</button>
+                                            <button className="btn btn-primary">Copy</button>
+                                        </div>
+                                    </div> */}
+
+
+                                </div>
                             </div>
                         </li>
-                        {/* ))} */}
+                        ))}
                     </ul>
                 </li>
             </ul>
