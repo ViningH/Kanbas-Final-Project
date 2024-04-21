@@ -9,14 +9,26 @@ import {
     addQuestion
 } from "./reducer";
 import * as client from "./client";
+import "../index.css";
+import * as clientQuiz from "../client";
+import {
+    setQuiz,
+} from "../reducer";
+import { FaCircleCheck, FaPencil } from "react-icons/fa6";
 function QuestionList() {
     const { courseId, quizId } = useParams();
     const questionList = useSelector((state: KanbasState) => state.questionsReducer.questions);
     const question = useSelector((state: KanbasState) => state.questionsReducer.question);
+    const quiz = useSelector((state: KanbasState) => state.quizzesReducer.quiz);
     const dispatch = useDispatch();
     useEffect(() => {
         client.findQuestionsForQuiz(quizId)
             .then((questions) => dispatch(setQuestions(questions)));
+    }, [quizId]
+    );
+    useEffect(() => {
+        clientQuiz.findQuizById(quizId)
+            .then((quiz) => dispatch(setQuiz(quiz)));
     }, [quizId]
     );
     const handleDelete = (questionId: any) => {
@@ -28,11 +40,19 @@ function QuestionList() {
     };
     const handleAddQuestion = (question: any) => {
         client.addQuestion(quizId, question).then((question) => {
-          dispatch(addQuestion(question));
+            dispatch(addQuestion(question));
         });
-      };
+    };
     return (
         <>
+            <div className="wd-align-right">
+                Points {quiz?.points} &ensp;
+                {quiz?.published ?
+                    <strong className="text-success"> <FaCircleCheck /> Published &emsp;</strong> :
+                    <strong>Unpublished</strong>
+                }
+                <button className="wd-standard-button" onClick={(e) => dispatch(setQuiz({ ...quiz, published: !quiz?.published }))}>⋮</button>
+            </div>
             <hr />
             <ul className="nav nav-tabs wd-settings-links">
                 <li className="nav-item">
@@ -43,21 +63,46 @@ function QuestionList() {
                 </li>
             </ul>
             < br />
-            Link for Questions:
-            <ul>
-                {questionList.filter((question) => question.quiz === quizId).map((question) => (
-                    <li><Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quizId}/Questions/${question._id}`} onClick={() => dispatch(setQuestion(question))}>{question.title}</Link>
-                        <br />
-                        <div>
-                            <button onClick={() => handleDelete(question._id)}>Delete</button>
-                        </div>
-                    </li>
+            <ul className="list-group wd-modules">
+                <li className="list-group-item">
+                    <div>
+                        <FaCaretDown className="me-2" /><strong>Quiz Questions</strong>
+                    </div>
+                    <ul className="list-group">
+                        {questionList.filter((question) => question.quiz === quizId).map((question) => (
+                            <li className="list-group-item">
+                                <div className="d-flex">
+                                    <div className="wd-assignment-item-padding">
+                                        <FaPencil className="wd-green-pencil" />
+                                    </div>
+                                    <div className="flex-fill wd-quiz-text-padding">
+                                        <h4>
+                                            <Link className="nav-link"
+                                                to={`/Kanbas/Courses/${courseId}/Quizzes/${quizId}/Questions/${question._id}`}
+                                                onClick={() => dispatch(setQuestion(question))}>
+                                                {question.title}
+                                            </Link>
 
-                ))}
+                                        </h4>
+                                        <span>
+                                            {question.questiontype === "MULTIPLECHOICE" ? <>Multiple Choice</> : <></>}
+                                            {question.questiontype === "FILLINBLANKS" ? <>Fill In Blanks</> : <></>}
+                                            {question.questiontype === "TRUEFALSE" ? <>True or False</> : <></>}
+                                        </span> | {question.points} pts
+                                    </div>
+                                    <div className="wd-assignment-item-padding">
+                                        <button className="wd-standard-button" onClick={() => handleDelete(question._id)}>Delete</button>
+                                    </div>
+                                </div>
+                            </li>
+
+                        ))}
+                    </ul>
+                </li>
             </ul>
-            <button onClick={()=>handleAddQuestion({...question, _id: Date.now()})}>New Question</button>
-            <button>New Question Group</button>
-            <button>Find Questions</button>
+            <button className="wd-standard-button" onClick={() => handleAddQuestion({ ...question, _id: Date.now() })}>+ New Question</button>
+            <button className="wd-standard-button">+ New Question Group</button>
+            <button className="wd-standard-button">Find Questions</button>
             <hr />
             <p className="wd-inline-align">
                 <input type="checkbox" value="NOTIFYUSERS" name="notify-users" id="notify-users" />
