@@ -5,6 +5,7 @@ import { addQuiz, updateQuiz as reduxUpdateQuiz, setQuiz, setQuizzes } from "../
 import { findQuizById, updateQuiz as clientUpdateQuiz } from '../client';
 import { KanbasState } from "../../../store";
 import './index.css';
+import { FaCheckCircle } from 'react-icons/fa';
 
 const QuizDetails: React.FC = () => {
     const params = useParams<{ courseId: string; quizId: string }>();
@@ -15,7 +16,7 @@ const QuizDetails: React.FC = () => {
     const togglePublish = () => {
         const newPublishedState = !quizInfo.published;
         const updatedQuizInfo = { ...quizInfo, published: newPublishedState };
-    
+
         clientUpdateQuiz(updatedQuizInfo)
             .then(() => {
                 // Use setQuiz to manually update the local quiz state in Redux
@@ -41,9 +42,9 @@ const QuizDetails: React.FC = () => {
 
     const [isPublished, setIsPublished] = useState(quizInfo.published);
 
-useEffect(() => {
-    setIsPublished(quizInfo.published);
-}, [quizInfo.published]);
+    useEffect(() => {
+        setIsPublished(quizInfo.published);
+    }, [quizInfo.published]);
 
     useEffect(() => {
         if (!params.quizId) {
@@ -69,28 +70,53 @@ useEffect(() => {
 
     return (
         <div key={quizInfo.published} className="quiz-details-container">
-            <button onClick={() => navigate(`/Kanbas/Courses/${params.courseId}/Quizzes/${params.quizId}`)}>Edit</button>
-            <button onClick={() => navigate(`/Kanbas/Courses/${params.courseId}/Quizzes/${params.quizId}/Preview`)}>Preview</button>
-            <button className="wd-standard-button" onClick={togglePublish}>
-            {quizInfo.published ? 'Unpublish' : 'Publish'}
-        </button>
-            <Link to={`/Kanbas/Courses/${params.courseId}/Quizzes`}><button className="wd-standard-button" onClick={() => handleSaveAndPublish({...quizInfo, published: true})}>Save & Publish</button></Link>
+            <div className="wd-align-right">
+                <button className="wd-standard-button" onClick={() => navigate(`/Kanbas/Courses/${params.courseId}/Quizzes/${params.quizId}`)}>Edit</button>
+                <button className="wd-standard-button" onClick={() => navigate(`/Kanbas/Courses/${params.courseId}/Quizzes/${params.quizId}/Preview`)}>Preview</button>
+                <button className={quizInfo.published ? "publish-green-button" : "wd-standard-button"} onClick={togglePublish}>
+                    {quizInfo.published ? <><FaCheckCircle /> Published</> : 'Unpublished'}
+                </button>
+                <Link to={`/Kanbas/Courses/${params.courseId}/Quizzes`}><button className="wd-standard-button" onClick={() => handleSaveAndPublish({ ...quizInfo, published: true })}>Save & Publish</button></Link>
+            </div>
+            <hr />
             <h1 className="quiz
 -title">{quizInfo.title}</h1>
-            <div><strong>Quiz Type:</strong> {quizInfo.quiztype}</div>
-            <div><strong>Points:</strong> {quizInfo.points}</div>
-            <div><strong>Assignment Group - Quizzes:</strong>{quizInfo.group}</div>
-            <div><strong>Shuffle Answers:</strong> {quizInfo.shuffle}</div>
-            <div><strong>Time Limit:</strong> {quizInfo.time_limit}</div>
-            <div><strong>Multiple Attempts:</strong> {quizInfo.multiple_attempts}</div>
-            <div><strong>Show Correct Answers:</strong> {quizInfo.show_correct}</div>
+            <div className="mb-3 row">
+                <div className="col-3 details-text-right">
+                    <strong>Quiz Type: </strong></div>
+                <div className="col-3">
+                    {quizInfo.quiztype === "GRADEDQUIZ" ? <>Graded Quiz</> : <></>}
+                    {quizInfo.quiztype === "PRACTICEQUIZ" ? <>Practice Quiz</> : <></>}
+                    {quizInfo.quiztype === "GRADEDSURVEY" ? <>Graded Survey</> : <></>}
+                    {quizInfo.quiztype === "UNGRADEDSURVEY" ? <>Ungraded Survey</> : <></>}
+                </div>
+            </div>
+            <div className="mb-3 row">
+                <div className="col-3 details-text-right"><strong>Points:</strong></div>
+                <div className="col-3"> {quizInfo.points}</div>
+            </div>
+            <div className="mb-3 row">
+                <div className="col-3 details-text-right">
+                    <strong>  Assignment Group: </strong>
+                </div>
+                <div className="col-3">
+                    {quizInfo.group === "QUIZZES" ? <>Quizzes</> : <></>}
+                    {quizInfo.group === "EXAMS" ? <>Exams</> : <></>}
+                    {quizInfo.group === "ASSIGNMENTS" ? <>Assignments</> : <></>}
+                    {quizInfo.group === "PROJECT" ? <>Projects</> : <></>}</div>
+
+            </div>
+            <div><strong>Shuffle Answers:</strong> {quizInfo.shuffle ? <>Yes</> : <>No</>}</div>
+            <div><strong>Time Limit:</strong> {quizInfo.time_limit ? <>{quizInfo.time} Minutes</> : <>No</>}</div>
+            <div><strong>Multiple Attempts:</strong> {quizInfo.multiple_attempts ? <>Yes</> : <>No</>}</div>
+            <div><strong>Show Correct Answers:</strong> {quizInfo.show_correct ? <>Yes</> : <>No</>}</div>
             <div><strong>Access Code:</strong> {quizInfo.code}</div>
-            <div><strong>One Question at a Time:</strong> {quizInfo.one_question}</div>
-            <div><strong>Webcam Required:</strong> {quizInfo.webcam}</div>
-            <div><strong>Lock Questions After Answering:</strong> {quizInfo.lock}</div>
+            <div><strong>One Question at a Time:</strong> {quizInfo.one_question ? <>Yes</> : <>No</>}</div>
+            <div><strong>Webcam Required:</strong> {quizInfo.webcam ? <>Yes</> : <>No</>}</div>
+            <div><strong>Lock Questions After Answering:</strong> {quizInfo.lock ? <>Yes</> : <>No</>}</div>
             <div><strong>Due date:</strong> {quizInfo.due_date}</div>
-            <div><strong>Available date:</strong> {quizInfo.start_date}</div>
-            <div><strong>Until date:</strong> {quizInfo.until_date}</div>
+            <div><strong>Available Date:</strong> {quizInfo.start_date}</div>
+            <div><strong>Until Date:</strong> {quizInfo.until_date}</div>
         </div>
     );
 };

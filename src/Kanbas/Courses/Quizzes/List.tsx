@@ -69,28 +69,29 @@ function QuizList() {
                     </div>
                     <ul className="list-group">
                         {quizList.filter((quiz) => quiz.course === courseId).map((quiz) => (
-                        <li className="list-group-item">
+                            <li className="list-group-item"
+                                onClick={() => setQuiz(quiz)}>
 
-                            <div className="d-flex">
-                                <div className="wd-assignment-item-padding">
-                                    <FaRocket className="wd-green-pencil" />
-                                </div>
-                                <div className="flex-fill wd-quiz-text-padding">
-                                    
-                                    <h4><Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz._id}/Details`} className="nav-link">{quiz.title}</Link></h4>
-                                    <span><strong>Closed</strong></span> | <strong>Due</strong> {quiz.due_date} at 11:59 pm |
-                                    {quiz.points} pts | 11 Questions <br />
-                                    <div>
-                                        <button onClick={() => handleDelete(quiz._id)}>Delete</button>
+                                <div className="d-flex">
+                                    <div className="wd-assignment-item-padding">
+                                        <FaRocket className="wd-green-pencil" />
                                     </div>
+                                    <div className="flex-fill wd-quiz-text-padding">
 
-                                </div>
-                                <div className="wd-assignment-item-padding">
-                                    <FaCheckCircle className="text-success" /><FaEllipsisV className="ms-2" />
+                                        <h4><Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz._id}/Details`} className="nav-link">{quiz.title}</Link></h4>
+                                        <span><strong>Closed</strong></span> | <strong>Due</strong> {quiz.due_date} at 11:59 pm |
+                                        {quiz.points} pts | 11 Questions <br />
+                                        <div>
+                                            <button onClick={() => handleDelete(quiz._id)}>Delete</button>
+                                        </div>
+
+                                    </div>
+                                    <div className="wd-assignment-item-padding">
+                                        <FaCheckCircle className="text-success" /><FaEllipsisV className="ms-2" />
 
 
-                                    {/* working on toggle button here */}
-                                    {/* <a className="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                        {/* working on toggle button here */}
+                                        {/* <a className="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
                                     <FaEllipsisV className="ms-2" /></a>
 
                                     <div className="collapse" id="collapseExample">
@@ -101,9 +102,9 @@ function QuizList() {
                                     </div> */}
 
 
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
+                            </li>
                         ))}
                     </ul>
                 </li>

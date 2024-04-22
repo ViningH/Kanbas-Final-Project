@@ -44,3 +44,18 @@
     text-align: right;
   }
   
+  .publish-green-button {
+    text-align: left;
+    background-color: green;
+    color: white;
+    border:none;
+    height: 35px;
+    padding-left: 10px;
+    padding-right:10px;
+    margin-inline: 3px;
+    border-radius: 5px;
+  }
+
+  .details-text-right {
+    text-align: right;
+  }
