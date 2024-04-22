@@ -16,5 +16,9 @@
 }
 
 .wd-unpublished-leftBorder{
-    border-left: 2px solid gray;
+    border-left: 2px solid gray !important;
+}
+
+.wd-small-button {
+    background-color: white;
 }
