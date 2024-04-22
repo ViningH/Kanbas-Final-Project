@@ -22,8 +22,8 @@ function QuizEditor() {
             client.updateQuiz(quiz).then(() => { dispatch(updateQuiz(quiz)) });
         } else {
             client.addQuiz(courseId, quiz).then((quiz) => { dispatch(addQuiz(quiz)) });
+            dispatch(setQuiz(quiz));
         };
-        navigate(`/Kanbas/Courses/${courseId}/Quizzes`);
     };
     const handleSaveAndPublish = (quiz: { _id: any; }) => {
         if (quizList.filter(q => q._id === quiz._id).length > 0) {
@@ -294,9 +294,9 @@ function QuizEditor() {
                     <input type="checkbox" value="NOTIFYUSERS" name="notify-users" id="notify-users" />
                     <label htmlFor="notify-users">&nbsp; Notify users that this content has changed</label>
                     <span>
-                        <Link to={`/Kanbas/Courses/${courseId}/Quizzes`}><button className="wd-standard-button">Cancel</button></Link>
+                        <Link to={`/Kanbas/Courses/${courseId}/Quizzes`} ><button className="wd-standard-button">Cancel</button></Link>
                         <Link to={`/Kanbas/Courses/${courseId}/Quizzes`}><button className="wd-standard-button" onClick={() => handleSaveAndPublish({...quiz, published: true})}>Save & Publish</button></Link>
-                        <Link to={`/Kanbas/Courses/${courseId}/Quizzes`}><button className="wd-red-button" onClick={handleSave}>Save</button></Link>
+                        <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz._id}/Details`}><button className="wd-red-button" onClick={handleSave}>Save</button></Link>
                     </span>
                 </p>
                 <hr />

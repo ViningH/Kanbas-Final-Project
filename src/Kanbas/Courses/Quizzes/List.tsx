@@ -95,13 +95,18 @@ function QuizList() {
         }
     }
 
+    const findNumberOfQuestions = (quiz: { _id: any; } ) => {
+        const questions = clientQuestions.findQuestionsForQuiz(quiz._id);
+        
+        
+    } ;
 
     return (
         <>
             <p className="wd-inline-align">
                 <input placeholder="Search for Quiz" />
                 <span>
-                    <Link to={`/Kanbas/Courses/${courseId}/Quizzes/NewQuiz`}>
+                    <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${new Date().getTime().toString()}`}>
                         <button className="wd-red-button"
                             onClick={() => dispatch(setQuiz({
                                 ...initialquiz,

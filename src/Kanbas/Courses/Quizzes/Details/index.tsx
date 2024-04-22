@@ -40,11 +40,6 @@ const QuizDetails: React.FC = () => {
             });
     };
 
-    const [isPublished, setIsPublished] = useState(quizInfo.published);
-
-    useEffect(() => {
-        setIsPublished(quizInfo.published);
-    }, [quizInfo.published]);
 
     useEffect(() => {
         if (!params.quizId) {
@@ -63,10 +58,13 @@ const QuizDetails: React.FC = () => {
 
         fetchQuizDetails();
     }, [dispatch, params.quizId]);
+    
+  
 
     if (!quizInfo) {
         return <div>Loading...</div>;
     }
+
 
     return (
         <div key={quizInfo.published} className="quiz-details-container">
