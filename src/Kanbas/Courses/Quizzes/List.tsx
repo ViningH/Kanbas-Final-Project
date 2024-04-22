@@ -44,11 +44,6 @@ function QuizList() {
         webcam: false,
         lock: false
     };
-    // const sortQuizByDate(quiz){
-    //     quizzes._id.sort(function(a, b){
-
-    //     })
-    // }
 
     
     const quizInfo = useSelector((state: KanbasState) => state.quizzesReducer.quiz);
@@ -67,8 +62,6 @@ function QuizList() {
                 // Optionally, handle errors (e.g., by displaying an error message)
             });
     };
-    const [isPublished, setIsPublished] = useState(quizInfo.published);
-
     
 
     return (
