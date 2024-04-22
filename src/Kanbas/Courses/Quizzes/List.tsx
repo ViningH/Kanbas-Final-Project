@@ -24,7 +24,20 @@ function QuizList() {
             });
         }
     }
-
+    const initialquiz = {
+        title: "New Quiz",
+        published: false,
+        quiztype: "GRADEDQUIZ",
+        group: "QUIZZES",
+        shuffle: true,
+        time_limit: true,
+        time: 20,
+        multiple_attempts: false,
+        show_correct: false,
+        one_question: true,
+        webcam: false,
+        lock: false
+    };
     // const sortQuizByDate(quiz){
     //     quizzes._id.sort(function(a, b){
 
@@ -58,6 +71,7 @@ function QuizList() {
                         {quizList.filter((quiz) => quiz.course === courseId).map((quiz) => (
                         <li className="list-group-item"
                                 onClick={() => setQuiz(quiz)} >
+
                             <div className="d-flex">
                                 <div className="wd-assignment-item-padding">
                                     <FaRocket className="wd-green-pencil" />
@@ -67,9 +81,6 @@ function QuizList() {
                                     <h4><Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz._id}/Details`} className="nav-link">{quiz.title}</Link></h4>
                                     <span><strong>Closed</strong></span> | <strong>Due</strong> {quiz.due_date} at 11:59 pm |
                                     {quiz.points} pts | 11 Questions <br />
-                                    <div>
-                                        <button onClick={() => handleDelete(quiz._id)}>Delete</button>
-                                    </div>
 
                                 </div>
                                 <div className="wd-assignment-item-padding">
@@ -78,13 +89,16 @@ function QuizList() {
 
 
                                     {/* working on toggle button here */}
-                                    <button className="btn btn-primary" type="button" data-bs-toggle="collapse" 
+                                    <button className="ms-2" type="button" data-bs-toggle="collapse" 
                                         data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                                     <FaEllipsisV className="ms-2" /></button>
                                 </div>
                                 <div className="collapse" id="collapseExample">
-                                    Edit
+                                    <button>Edit</button><br />
+                                    <button onClick={() => handleDelete(quiz._id)}>Delete</button><br />
+                                    <button>Publish</button>
                                 </div>
+
                             </div>
                         </li>
                         ))}
