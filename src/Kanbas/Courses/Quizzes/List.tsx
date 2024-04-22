@@ -96,12 +96,12 @@ function QuizList() {
                     </div>
                     <ul className="list-group">
                         {quizList.filter((quiz) => quiz.course === courseId).map((quiz) => (
-                        <li className="list-group-item"
+                        <li className={quizInfo.published ? "list-group-item" : "list-group-item wd-unpublished-leftBorder"}
                                 onClick={() => setQuiz(quiz)} >
 
                             <div className="d-flex">
                                 <div className="wd-assignment-item-padding">
-                                    <FaRocket className="wd-green-pencil" />
+                                    <FaRocket className={quizInfo.published ? "wd-green-pencil" : "wd-unpublished-pencil"  } />
                                 </div>
                                 <div className="flex-fill wd-quiz-text-padding">
                                     
@@ -110,9 +110,8 @@ function QuizList() {
                                     {quiz.points} pts | 11 Questions <br />
 
                                 </div>
-                                <div className="wd-assignment-item-padding">
-                                    {/* <FaCheckCircle className="text-success" /> */}
-                                    <FaBan />
+                                <div className="wd-assignment-item-padding">                             
+                                    {quizInfo.published ? <FaCheckCircle className="text-success" /> : <FaBan /> }
 
                                     {/* toggle button */}
                                     <button type="button" data-bs-toggle="collapse" 
@@ -124,7 +123,7 @@ function QuizList() {
                                     <button className="wd-standard-button" onClick={() => handleDelete(quiz._id)}>Delete</button><br />
                                     {/* <button className="wd-standard-button">Publish</button> */}
                                     <button className="wd-standard-button" onClick={togglePublish}>
-                                        {quizInfo.published ? <>Publish</> : 'Unpublish'}</button>
+                                        {quizInfo.published ? 'Unpublish': <>Publish</>}</button>
                                 </div>
 
                             </div>

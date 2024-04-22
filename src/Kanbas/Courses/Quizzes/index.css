@@ -9,3 +9,12 @@
     padding-top: 20px;
     padding-bottom: 20px;
 }
+
+.wd-unpublished-pencil{
+    font-size: 30px;
+    color:gray;
+}
+
+.wd-unpublished-leftBorder{
+    border-left: 2px solid gray;
+}
