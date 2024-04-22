@@ -5,3 +5,30 @@
 .wd-align-text-right {
     text-align: right;
 }
+.preview-list {
+    list-style: none;
+    border: solid grey 1px;
+    margin: 50px;
+}
+
+.inner-preview {
+    padding: 20px;
+}
+
+.top-preview {
+    background-color: gainsboro;
+    border-bottom: solid grey 1px;
+    padding: 5px
+}
+
+.long-button {
+    width: 100%;
+    text-align: left;
+    background-color: gainsboro;
+    border:none;
+    height: 35px;
+    padding-left: 10px;
+    padding-right:10px;
+    margin-inline: 3px;
+    border-radius: 5px;
+}
