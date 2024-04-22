@@ -47,10 +47,10 @@ function QuizEditor() {
                 <hr />
                 <ul className="nav nav-tabs wd-settings-links">
                     <li className="nav-item">
-                        <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz._id}`} className="nav-link active">Details</Link>
+                        <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz._id}`} onClick={(e)=>dispatch(setQuiz(quiz))} className="nav-link active">Details</Link>
                     </li>
                     <li className="nav-item">
-                        <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz._id}/Questions`} className="nav-link">Questions</Link>
+                        <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz._id}/Questions`} onClick={(e)=>dispatch(setQuiz(quiz))} className="nav-link">Questions</Link>
                     </li>
                 </ul>
                 < br />

@@ -13,6 +13,8 @@ import "../index.css";
 import * as clientQuiz from "../client";
 import {
     setQuiz,
+    updateQuiz,
+    addQuiz,
 } from "../reducer";
 import { FaCircleCheck, FaPencil } from "react-icons/fa6";
 function QuestionList() {
@@ -20,17 +22,14 @@ function QuestionList() {
     const questionList = useSelector((state: KanbasState) => state.questionsReducer.questions);
     const question = useSelector((state: KanbasState) => state.questionsReducer.question);
     const quiz = useSelector((state: KanbasState) => state.quizzesReducer.quiz);
+    const quizList = useSelector((state: KanbasState) => state.quizzesReducer.quizzes);
     const dispatch = useDispatch();
     useEffect(() => {
         client.findQuestionsForQuiz(quizId)
             .then((questions) => dispatch(setQuestions(questions)));
     }, [quizId]
     );
-    useEffect(() => {
-        clientQuiz.findQuizById(quizId)
-            .then((quiz) => dispatch(setQuiz(quiz)));
-    }, [quizId]
-    );
+    const navigate = useNavigate();
     const handleDelete = (questionId: any) => {
         if (window.confirm("Do you want to delete this question?")) {
             client.deleteQuestion(questionId).then((status) => {
@@ -42,6 +41,22 @@ function QuestionList() {
         client.addQuestion(quizId, question).then((question) => {
             dispatch(addQuestion(question));
         });
+    };
+    const handleSave = () => {
+        if (quizList.filter(q => q._id === quiz._id).length > 0) {
+            clientQuiz.updateQuiz(quiz).then(() => { dispatch(updateQuiz(quiz)) });
+        } else {
+            clientQuiz.addQuiz(courseId, quiz).then((quiz) => { dispatch(addQuiz(quiz)) });
+        };
+        navigate(`/Kanbas/Courses/${courseId}/Quizzes`);
+    };
+    const handleSaveAndPublish = (quiz: { _id: any; }) => {
+        if (quizList.filter(q => q._id === quiz._id).length > 0) {
+            clientQuiz.updateQuiz(quiz).then(() => { dispatch(updateQuiz(quiz)) });
+        } else {
+            clientQuiz.addQuiz(courseId, quiz).then((quiz) => { dispatch(addQuiz(quiz)) });
+        };
+        navigate(`/Kanbas/Courses/${courseId}/Quizzes`);
     };
     return (
         <>
@@ -56,10 +71,10 @@ function QuestionList() {
             <hr />
             <ul className="nav nav-tabs wd-settings-links">
                 <li className="nav-item">
-                    <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quizId}`} className="nav-link">Details</Link>
+                    <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quizId}`} onClick={(e)=>dispatch(setQuiz(quiz))} className="nav-link">Details</Link>
                 </li>
                 <li className="nav-item">
-                    <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quizId}/Questions`} className="nav-link active">Questions</Link>
+                    <Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quizId}/Questions`} onClick={(e)=>dispatch(setQuiz(quiz))} className="nav-link active">Questions</Link>
                 </li>
             </ul>
             < br />
@@ -109,8 +124,8 @@ function QuestionList() {
                 <label htmlFor="notify-users">&nbsp; Notify users that this quiz has changed</label>
                 <span>
                     <Link to={`/Kanbas/Courses/${courseId}/Quizzes`}><button className="wd-standard-button">Cancel</button></Link>
-                    <Link to={`/Kanbas/Courses/${courseId}/Quizzes`}><button className="wd-standard-button" >Save & Publish</button></Link>
-                    <Link to={`/Kanbas/Courses/${courseId}/Quizzes`}><button className="wd-red-button" >Save</button></Link>
+                    <Link to={`/Kanbas/Courses/${courseId}/Quizzes`}><button className="wd-standard-button" onClick={() => handleSaveAndPublish({...quiz, published: true})}>Save & Publish</button></Link>
+                    <Link to={`/Kanbas/Courses/${courseId}/Quizzes`}><button className="wd-red-button" onClick={handleSave}>Save</button></Link>
                 </span>
             </p>
             <br />
