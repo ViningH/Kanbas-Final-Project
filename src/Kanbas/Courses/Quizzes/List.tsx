@@ -36,7 +36,7 @@ function QuizList() {
             <p className="wd-inline-align">
                 <input placeholder="Search for Quiz" />
                 <span>
-                    <Link to={`/Kanbas/Courses/${courseId}/Quizzes/NewQuiz`}>
+                    <Link to={`/Kanbas/Courses/${courseId}/Quizzes/NewQuiz`}> 
                         <button className="wd-red-button"
                             onClick={() => dispatch(setQuiz({
                                 ...quiz,
@@ -56,8 +56,8 @@ function QuizList() {
                     </div>
                     <ul className="list-group">
                         {quizList.filter((quiz) => quiz.course === courseId).map((quiz) => (
-                        <li className="list-group-item">
-
+                        <li className="list-group-item"
+                                onClick={() => setQuiz(quiz)} >
                             <div className="d-flex">
                                 <div className="wd-assignment-item-padding">
                                     <FaRocket className="wd-green-pencil" />
@@ -73,21 +73,17 @@ function QuizList() {
 
                                 </div>
                                 <div className="wd-assignment-item-padding">
-                                    <FaCheckCircle className="text-success" /><FaEllipsisV className="ms-2" />
+                                    <FaCheckCircle className="text-success" />
+                                    {/* <FaEllipsisV className="ms-2" /> */}
 
 
                                     {/* working on toggle button here */}
-                                    {/* <a className="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                    <FaEllipsisV className="ms-2" /></a>
-
-                                    <div className="collapse" id="collapseExample">
-                                        <div className="card card-body">
-                                            <button className="btn btn-primary">Edit</button>
-                                            <button className="btn btn-primary">Copy</button>
-                                        </div>
-                                    </div> */}
-
-
+                                    <button className="btn btn-primary" type="button" data-bs-toggle="collapse" 
+                                        data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                    <FaEllipsisV className="ms-2" /></button>
+                                </div>
+                                <div className="collapse" id="collapseExample">
+                                    Edit
                                 </div>
                             </div>
                         </li>
