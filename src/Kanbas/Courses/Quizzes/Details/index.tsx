@@ -59,11 +59,6 @@ const QuizDetails: React.FC = () => {
         fetchQuizDetails();
     }, [dispatch, params.quizId]);
     
-  
-
-    if (!quizInfo) {
-        return <div>Loading...</div>;
-    }
 
 
     return (

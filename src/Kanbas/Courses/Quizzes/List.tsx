@@ -95,12 +95,6 @@ function QuizList() {
         }
     }
 
-    const findNumberOfQuestions = (quiz: { _id: any; } ) => {
-        const questions = clientQuestions.findQuestionsForQuiz(quiz._id);
-        
-        
-    } ;
-
     return (
         <>
             <p className="wd-inline-align">
@@ -113,7 +107,7 @@ function QuizList() {
                                 course: courseId,
                                 _id: new Date().getTime().toString()
                             }))}>
-                            + Assignment
+                            + Add Quiz
                         </button>
                     </Link>
                     <button className="wd-standard-button">⋮</button></span>
