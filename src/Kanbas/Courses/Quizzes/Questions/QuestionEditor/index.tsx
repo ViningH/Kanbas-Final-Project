@@ -194,22 +194,22 @@ function QuestionEditor() {
                         ))}
                     </ul>
                     <div className="wd-align-right">
-                    Edit Label:
-                    <input value={editedBlank.label}
+                    Edit Label: &nbsp;
+                    <input value={editedBlank.label} className= "quiz-input-width quiz-inputs-sizing"
                         onChange={(e) => (setEditedBlank({ ...editedBlank, label: e.target.value }))}
                     />
-                    Edit Answer:
-                    <input value={editedBlank.answer}
+                    &nbsp;&nbsp;&nbsp;Edit Answer: &nbsp;
+                    <input value={editedBlank.answer} className= "quiz-input-width quiz-inputs-sizing"
                         onChange={(e) => (setEditedBlank({ ...editedBlank, answer: e.target.value }))}
                     />
                     <button className="add-choice-button" onClick={() => handleEditBlank(editedBlank)}>Update</button>
                     <br />
-                    New Label:
-                    <input value={newBlank.label}
+                    New Label: &nbsp;
+                    <input value={newBlank.label} className= "quiz-input-width quiz-inputs-sizing"
                         onChange={(e) => (setNewBlank({ ...newBlank, label: e.target.value }))}
                     />
-                    New Answer:
-                    <input value={newBlank.answer}
+                    &nbsp; New Answer: &nbsp;
+                    <input value={newBlank.answer} className= "quiz-input-width quiz-inputs-sizing"
                         onChange={(e) => (setNewBlank({ ...newBlank, answer: e.target.value }))}
                     />
                     <button className="add-choice-button" onClick={() => handleAddBlank([...question.blanks, { blank_no: (Date.now()), label: newBlank.label, answer: newBlank.answer }])}>+ Add Another Answer</button>

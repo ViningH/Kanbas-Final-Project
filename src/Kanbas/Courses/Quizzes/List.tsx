@@ -24,7 +24,20 @@ function QuizList() {
             });
         }
     }
-
+    const initialquiz = {
+        title: "New Quiz",
+        published: false,
+        quiztype: "GRADEDQUIZ",
+        group: "QUIZZES",
+        shuffle: true,
+        time_limit: true,
+        time: 20,
+        multiple_attempts: false,
+        show_correct: false,
+        one_question: true,
+        webcam: false,
+        lock: false
+    };
     // const sortQuizByDate(quiz){
     //     quizzes._id.sort(function(a, b){
 
@@ -39,7 +52,7 @@ function QuizList() {
                     <Link to={`/Kanbas/Courses/${courseId}/Quizzes/NewQuiz`}>
                         <button className="wd-red-button"
                             onClick={() => dispatch(setQuiz({
-                                ...quiz,
+                                ...initialquiz,
                                 course: courseId,
                                 _id: new Date().getTime().toString()
                             }))}>
