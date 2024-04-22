@@ -79,8 +79,7 @@ const QuizDetails: React.FC = () => {
                 <Link to={`/Kanbas/Courses/${params.courseId}/Quizzes`}><button className="wd-standard-button" onClick={() => handleSaveAndPublish({ ...quizInfo, published: true })}>Save & Publish</button></Link>
             </div>
             <hr />
-            <h1 className="quiz
--title">{quizInfo.title}</h1>
+            <h1 className="quiz-title">{quizInfo.title}</h1>
             <div className="mb-3 row">
                 <div className="col-3 details-text-right">
                     <strong>Quiz Type: </strong></div>
@@ -106,17 +105,57 @@ const QuizDetails: React.FC = () => {
                     {quizInfo.group === "PROJECT" ? <>Projects</> : <></>}</div>
 
             </div>
-            <div><strong>Shuffle Answers:</strong> {quizInfo.shuffle ? <>Yes</> : <>No</>}</div>
-            <div><strong>Time Limit:</strong> {quizInfo.time_limit ? <>{quizInfo.time} Minutes</> : <>No</>}</div>
-            <div><strong>Multiple Attempts:</strong> {quizInfo.multiple_attempts ? <>Yes</> : <>No</>}</div>
-            <div><strong>Show Correct Answers:</strong> {quizInfo.show_correct ? <>Yes</> : <>No</>}</div>
-            <div><strong>Access Code:</strong> {quizInfo.code}</div>
-            <div><strong>One Question at a Time:</strong> {quizInfo.one_question ? <>Yes</> : <>No</>}</div>
-            <div><strong>Webcam Required:</strong> {quizInfo.webcam ? <>Yes</> : <>No</>}</div>
-            <div><strong>Lock Questions After Answering:</strong> {quizInfo.lock ? <>Yes</> : <>No</>}</div>
-            <div><strong>Due date:</strong> {quizInfo.due_date}</div>
-            <div><strong>Available Date:</strong> {quizInfo.start_date}</div>
-            <div><strong>Until Date:</strong> {quizInfo.until_date}</div>
+            <div className="mb-3 row">
+                <div className="col-3 details-text-right"><strong>Shuffle Answers:</strong></div>
+                <div className="col-3">{quizInfo.shuffle ? <>Yes</> : <>No</>}</div>
+            </div>
+            <div className="mb-3 row">
+                <div className="col-3 details-text-right"><strong>Time Limit:</strong></div>
+                <div className="col-3">
+                    {quizInfo.time_limit ? <>{quizInfo.time} Minutes</> : <>No</>}</div>
+            </div>
+            <div className="mb-3 row">
+                <div className="col-3 details-text-right"><strong>Multiple Attempts:</strong></div>
+                <div className="col-3">
+                    {quizInfo.multiple_attempts ? <>Yes</> : <>No</>}</div>
+            </div>
+            <div className="mb-3 row">
+                <div className="col-3 details-text-right"><strong>Show Correct Answers:</strong> </div>
+                <div className="col-3">
+                    {quizInfo.show_correct ? <>Yes</> : <>No</>}</div>
+            </div>
+            <div className="mb-3 row">
+                <div className="col-3 details-text-right"><strong>Access Code:</strong> </div>
+                <div className="col-3">{quizInfo.code}</div>
+            </div>
+            <div className="mb-3 row">
+                <div className="col-3 details-text-right"><strong>One Question at a Time:</strong> </div>
+                <div className="col-3">
+                    {quizInfo.one_question ? <>Yes</> : <>No</>}</div>
+            </div>
+            <div className="mb-3 row">
+                <div className="col-3 details-text-right"><strong>Webcam Required:</strong> </div>
+                <div className="col-3">{quizInfo.webcam ? <>Yes</> : <>No</>}</div>
+            </div>
+            <div className="mb-3 row">
+                <div className="col-3 details-text-right"><strong>Lock Questions After Answering:</strong></div>
+                <div className="col-3">
+                    {quizInfo.lock ? <>Yes</> : <>No</>}</div>
+            </div>
+            <div className="mb-3 row">
+                <div className="col-3 details-text-right"><strong>Due Date:</strong>
+                </div>
+                <div className="col-3">
+                    {quizInfo.due_date}</div>
+            </div>
+            <div className="mb-3 row">
+                <div className="col-3 details-text-right"><strong>Available Date:</strong></div>
+                <div className="col-3"> {quizInfo.start_date}</div>
+            </div>
+            <div className="mb-3 row">
+                <div className="col-3 details-text-right"><strong>Until Date:</strong> </div>
+                <div className="col-3">{quizInfo.until_date}</div>
+            </div>
         </div>
     );
 };
