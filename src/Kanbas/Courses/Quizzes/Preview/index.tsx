@@ -52,7 +52,7 @@ function QuizPreview() {
                                     branding: false,
                                 }}
                                 value={question.details}
-                                apiKey='u1u1m6dbp6lhdqlz8nc5bfub9phithmuzavtcs2b6cbusqj7'
+                                apiKey='o2yp55qgdndao6orwojg9p1l6ycbq5zloiq66aa5yvjagb5n'
                             />
                             <hr />
                             {question?.questiontype === "MULTIPLECHOICE" ?
