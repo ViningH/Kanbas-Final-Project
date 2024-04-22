@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
 import "./index.css";
-import { FaEllipsisV, FaCheckCircle, FaPlusCircle, FaExternalLinkAlt, FaLink, FaRocket, FaCaretDown } from "react-icons/fa";
+import { FaEllipsisV, FaCheckCircle, FaPlusCircle, FaExternalLinkAlt, FaLink, FaRocket, FaCaretDown, FaBan } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { KanbasState } from "../../store";
 import * as client from "./client";
 import { setQuiz, setQuizzes, deleteQuiz } from "./reducer";
+import { findQuizById, updateQuiz as clientUpdateQuiz } from './client';
+
 function QuizList() {
     const { courseId } = useParams();
     const quiz = useSelector((state: KanbasState) => state.quizzesReducer.quiz);
     const quizList = useSelector((state: KanbasState) => state.quizzesReducer.quizzes);
     const dispatch = useDispatch();
+
+    const params = useParams<{ courseId: string; quizId: string }>();
+    const navigate = useNavigate();
+
     useEffect(() => {
         client.findQuizzesForCourse(courseId)
             .then((quizzes) =>
@@ -44,12 +50,33 @@ function QuizList() {
     //     })
     // }
 
+    
+    const quizInfo = useSelector((state: KanbasState) => state.quizzesReducer.quiz);
+    const togglePublish = () => {
+        const newPublishedState = !quizInfo.published;
+        const updatedQuizInfo = { ...quizInfo, published: newPublishedState };
+
+        clientUpdateQuiz(updatedQuizInfo)
+            .then(() => {
+                // Use setQuiz to manually update the local quiz state in Redux
+                dispatch(setQuiz(updatedQuizInfo));
+                // Optionally, navigate or display a success message
+            })
+            .catch(error => {
+                console.error('Failed to toggle publish status:', error);
+                // Optionally, handle errors (e.g., by displaying an error message)
+            });
+    };
+    const [isPublished, setIsPublished] = useState(quizInfo.published);
+
+    
+
     return (
         <>
             <p className="wd-inline-align">
                 <input placeholder="Search for Quiz" />
                 <span>
-                    <Link to={`/Kanbas/Courses/${courseId}/Quizzes/NewQuiz`}>
+                    <Link to={`/Kanbas/Courses/${courseId}/Quizzes/NewQuiz`}> 
                         <button className="wd-red-button"
                             onClick={() => dispatch(setQuiz({
                                 ...initialquiz,
@@ -69,42 +96,38 @@ function QuizList() {
                     </div>
                     <ul className="list-group">
                         {quizList.filter((quiz) => quiz.course === courseId).map((quiz) => (
-                            <li className="list-group-item"
-                                onClick={() => setQuiz(quiz)}>
+                        <li className={quizInfo.published ? "list-group-item" : "list-group-item wd-unpublished-leftBorder"}
+                                onClick={() => setQuiz(quiz)} >
 
-                                <div className="d-flex">
-                                    <div className="wd-assignment-item-padding">
-                                        <FaRocket className="wd-green-pencil" />
-                                    </div>
-                                    <div className="flex-fill wd-quiz-text-padding">
-
-                                        <h4><Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz._id}/Details`} className="nav-link">{quiz.title}</Link></h4>
-                                        <span><strong>Closed</strong></span> | <strong>Due</strong> {quiz.due_date} at 11:59 pm |
-                                        {quiz.points} pts | 11 Questions <br />
-                                        <div>
-                                            <button onClick={() => handleDelete(quiz._id)}>Delete</button>
-                                        </div>
-
-                                    </div>
-                                    <div className="wd-assignment-item-padding">
-                                        <FaCheckCircle className="text-success" /><FaEllipsisV className="ms-2" />
-
-
-                                        {/* working on toggle button here */}
-                                        {/* <a className="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                    <FaEllipsisV className="ms-2" /></a>
-
-                                    <div className="collapse" id="collapseExample">
-                                        <div className="card card-body">
-                                            <button className="btn btn-primary">Edit</button>
-                                            <button className="btn btn-primary">Copy</button>
-                                        </div>
-                                    </div> */}
-
-
-                                    </div>
+                            <div className="d-flex">
+                                <div className="wd-assignment-item-padding">
+                                    <FaRocket className={quizInfo.published ? "wd-green-pencil" : "wd-unpublished-pencil"  } />
                                 </div>
-                            </li>
+                                <div className="flex-fill wd-quiz-text-padding">
+                                    
+                                    <h4><Link to={`/Kanbas/Courses/${courseId}/Quizzes/${quiz._id}/Details`} className="nav-link">{quiz.title}</Link></h4>
+                                    <span><strong>Closed</strong></span> | <strong>Due</strong> {quiz.due_date} at 11:59 pm |
+                                    {quiz.points} pts | 11 Questions <br />
+
+                                </div>
+                                <div className="wd-assignment-item-padding">                             
+                                    {quizInfo.published ? <FaCheckCircle className="text-success" /> : <FaBan /> }
+
+                                    {/* toggle button */}
+                                    <button type="button" data-bs-toggle="collapse" 
+                                        data-bs-target="#collapseQuizList" aria-expanded="false" aria-controls="collapseQuizList">
+                                    <FaEllipsisV className="ms-2" /></button>
+                                </div>
+                                <div className="collapse" id="collapseQuizList">
+                                    <button className="wd-standard-button" onClick={() => navigate(`/Kanbas/Courses/${params.courseId}/Quizzes/${params.quizId}`)}>Edit</button><br />
+                                    <button className="wd-standard-button" onClick={() => handleDelete(quiz._id)}>Delete</button><br />
+                                    {/* <button className="wd-standard-button">Publish</button> */}
+                                    <button className="wd-standard-button" onClick={togglePublish}>
+                                        {quizInfo.published ? 'Unpublish': <>Publish</>}</button>
+                                </div>
+
+                            </div>
+                        </li>
                         ))}
                     </ul>
                 </li>
