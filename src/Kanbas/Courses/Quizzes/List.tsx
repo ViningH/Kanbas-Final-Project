@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
 import "./index.css";
-import { FaEllipsisV, FaCheckCircle, FaPlusCircle, FaExternalLinkAlt, FaLink, FaRocket, FaCaretDown } from "react-icons/fa";
+import { FaEllipsisV, FaCheckCircle, FaPlusCircle, FaExternalLinkAlt, FaLink, FaRocket, FaCaretDown, FaBan } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { KanbasState } from "../../store";
 import * as client from "./client";
 import { setQuiz, setQuizzes, deleteQuiz } from "./reducer";
+import { findQuizById, updateQuiz as clientUpdateQuiz } from './client';
+
 function QuizList() {
     const { courseId } = useParams();
     const quiz = useSelector((state: KanbasState) => state.quizzesReducer.quiz);
     const quizList = useSelector((state: KanbasState) => state.quizzesReducer.quizzes);
     const dispatch = useDispatch();
+
+    const params = useParams<{ courseId: string; quizId: string }>();
+    const navigate = useNavigate();
+
     useEffect(() => {
         client.findQuizzesForCourse(courseId)
             .then((quizzes) =>
@@ -43,6 +49,27 @@ function QuizList() {
 
     //     })
     // }
+
+    
+    const quizInfo = useSelector((state: KanbasState) => state.quizzesReducer.quiz);
+    const togglePublish = () => {
+        const newPublishedState = !quizInfo.published;
+        const updatedQuizInfo = { ...quizInfo, published: newPublishedState };
+
+        clientUpdateQuiz(updatedQuizInfo)
+            .then(() => {
+                // Use setQuiz to manually update the local quiz state in Redux
+                dispatch(setQuiz(updatedQuizInfo));
+                // Optionally, navigate or display a success message
+            })
+            .catch(error => {
+                console.error('Failed to toggle publish status:', error);
+                // Optionally, handle errors (e.g., by displaying an error message)
+            });
+    };
+    const [isPublished, setIsPublished] = useState(quizInfo.published);
+
+    
 
     return (
         <>
@@ -84,19 +111,20 @@ function QuizList() {
 
                                 </div>
                                 <div className="wd-assignment-item-padding">
-                                    <FaCheckCircle className="text-success" />
-                                    {/* <FaEllipsisV className="ms-2" /> */}
+                                    {/* <FaCheckCircle className="text-success" /> */}
+                                    <FaBan />
 
-
-                                    {/* working on toggle button here */}
-                                    <button className="ms-2" type="button" data-bs-toggle="collapse" 
-                                        data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                    {/* toggle button */}
+                                    <button type="button" data-bs-toggle="collapse" 
+                                        data-bs-target="#collapseQuizList" aria-expanded="false" aria-controls="collapseQuizList">
                                     <FaEllipsisV className="ms-2" /></button>
                                 </div>
-                                <div className="collapse" id="collapseExample">
-                                    <button>Edit</button><br />
-                                    <button onClick={() => handleDelete(quiz._id)}>Delete</button><br />
-                                    <button>Publish</button>
+                                <div className="collapse" id="collapseQuizList">
+                                    <button className="wd-standard-button" onClick={() => navigate(`/Kanbas/Courses/${params.courseId}/Quizzes/${params.quizId}`)}>Edit</button><br />
+                                    <button className="wd-standard-button" onClick={() => handleDelete(quiz._id)}>Delete</button><br />
+                                    {/* <button className="wd-standard-button">Publish</button> */}
+                                    <button className="wd-standard-button" onClick={togglePublish}>
+                                        {quizInfo.published ? <>Publish</> : 'Unpublish'}</button>
                                 </div>
 
                             </div>
